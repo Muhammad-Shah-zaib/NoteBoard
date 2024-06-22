@@ -1,0 +1,7 @@
+.layout-ctn {
+    @apply grid grid-cols-12 w-screen h-screen overflow-hidden;
+}
+
+.sidebar-ctn {
+    @apply col-span-2 h-screen;
+}
