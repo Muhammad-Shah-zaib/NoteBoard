@@ -1,17 +1,18 @@
-import "./button.css";
-import React from "react";
+import './button.css';
+import React from 'react';
 
 interface props {
     children: React.ReactNode;
     className?: string;
+    onClick?: () => unknown;
 }
 
-function Button({children, className}: props) {
+function Button({ children, className, onClick }: props) {
     return (
-        <div className={className}>
+        <button onClick={onClick} className={className}>
             {children}
-        </div>
-    )
+        </button>
+    );
 }
 
-export default Button
+export default Button;

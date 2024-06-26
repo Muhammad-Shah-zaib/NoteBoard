@@ -1,57 +1,87 @@
 import './SideBar.css';
 import notion from '../../../assets/notion.svg';
 import Button from '../../button/Button';
-import CloseBtn from '../../../assets/buttons/CloseBtn';
+import DoubleArrowSvg from '../../../assets/button-svgs/DoubleArrowSvg.tsx';
 import Whiteboard from './Whiteboard.tsx';
 import Profile from './Profile.tsx';
-import SearchBtn from '../../../assets/buttons/SearchBtn.tsx';
-import HomeBtn from '../../../assets/buttons/HomeBtn.tsx';
-import SettingsBtn from '../../../assets/buttons/SettingsBtn.tsx';
+import SearchBtnSvg from '../../../assets/button-svgs/SearchBtnSvg.tsx';
+import HomeBtnSvg from '../../../assets/button-svgs/HomeBtnSvg.tsx';
+import SettingsBtnSvg from '../../../assets/button-svgs/SettingsBtnSvg.tsx';
 import Notes from './Notes.tsx';
+import Footer from './Footer.tsx';
+import React, { useRef } from 'react';
 
-function SideBar() {
+interface Props {
+    sideBarCtnRef: React.RefObject<HTMLDivElement>;
+    contentCtnRef: React.RefObject<HTMLDivElement>;
+    openBtnCtnRef: React.RefObject<HTMLDivElement>;
+}
+
+function SideBar({ sideBarCtnRef, contentCtnRef, openBtnCtnRef }: Props) {
+    const sideBarRef = useRef<HTMLDivElement>(null);
     return (
-        <div className="ctn">
+        <div className="ctn" ref={sideBarRef}>
             <div>
                 {/* header */}
                 <header>
                     {/* Logo and button */}
                     <div className="logo-ctn">
                         <img src={notion} alt="" />
-                        <Button className={`close-btn`}>{<CloseBtn />}</Button>
+                        <Button
+                            onClick={() => {
+                                (
+                                    sideBarCtnRef.current as HTMLDivElement
+                                ).classList.add('max-w-0');
+                                console.log(sideBarCtnRef.current);
+                                (
+                                    contentCtnRef.current as HTMLDivElement
+                                ).classList.add('w-full');
+                                (
+                                    openBtnCtnRef.current as HTMLDivElement
+                                ).classList.add('opacity-100');
+                                (
+                                    openBtnCtnRef.current as HTMLDivElement
+                                ).classList.remove('pointer-events-none');
+                            }}
+                            className={`close-btn`}
+                        >
+                            {<DoubleArrowSvg />}
+                        </Button>
                     </div>
                     {/* Profile image and name */}
                     <Profile />
-                    {/* buttons for setting search Home */}
+                    {/* button-svgs for setting search Home */}
                     <div className={`gap-4 space-y-0.5 py-6`}>
                         <div
                             className={`flex cursor-pointer items-center gap-2 px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
                         >
-                            <Button>{<SearchBtn />}</Button>
+                            <Button>{<SearchBtnSvg />}</Button>
                             <span>Search</span>
                         </div>
                         <div
                             className={`flex cursor-pointer items-center gap-2 px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
                         >
-                            <Button>{<HomeBtn />}</Button>
+                            <Button>{<HomeBtnSvg />}</Button>
                             <span>Home</span>
                         </div>
                         <div
                             className={`flex cursor-pointer items-center gap-2 px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
                         >
-                            <Button>{<SettingsBtn />}</Button>
+                            <Button>{<SettingsBtnSvg />}</Button>
                             <span>Settings</span>
                         </div>
                     </div>
                 </header>
                 {/* main */}
-                <main>
+                <main className={`main-ctn`}>
                     {/* Whiteboard and Whiteboard */}
                     <Whiteboard />
                     <Notes />
                 </main>
             </div>
-            <footer>{/* Logout / check Trash */}</footer>
+
+            {/* FOOTER */}
+            <Footer />
         </div>
     );
 }
