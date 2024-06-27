@@ -17,7 +17,7 @@ const Notes = () => {
                 </div>
             </header>
 
-            <main>
+            <main className={`h-3/4`}>
                 <NotesContent />
             </main>
         </div>

@@ -12,7 +12,6 @@ function MasterLayout() {
 
     const handleSideBarCLick = () => {
         (sideBarCtnRef.current as HTMLDivElement).classList.remove('max-w-0');
-        console.log(sideBarCtnRef.current);
         (contentCtnRef.current as HTMLDivElement).classList.remove('w-full');
         (openBtnCtnRef.current as HTMLDivElement).classList.remove(
             'opacity-100',
@@ -37,18 +36,18 @@ function MasterLayout() {
                 className="relative h-[100vh] w-[80%] overflow-auto bg-primary transition-all duration-200"
             >
                 {/* Following this the button to open the closed sideBar */}
-                <div
+                <span
                     ref={openBtnCtnRef}
-                    className={`pointer-events-none absolute inset-1 opacity-0 transition-all duration-300`}
+                    className={`place-center pointer-events-none absolute inset-1 z-20 flex max-h-[35px] max-w-[35px] rounded-lg opacity-0 transition-all duration-300 hover:bg-primary-700`}
                 >
                     {/* open button that will be seen only when the sidebar is not shown*/}
                     <Button
                         onClick={handleSideBarCLick}
-                        className={`rotate-180 p-2`}
+                        className={`z-20 rotate-180 p-2`}
                     >
                         <DoubleArrowSvg />
                     </Button>
-                </div>
+                </span>
                 {/* Content Component */}
                 <Notes />
             </div>
