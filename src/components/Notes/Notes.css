@@ -1,0 +1,3 @@
+.notes-ctn {
+    @apply flex h-[100vh] w-full flex-col space-y-8 overflow-auto overflow-x-hidden bg-primary;
+}

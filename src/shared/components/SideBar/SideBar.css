@@ -1,5 +1,5 @@
 .ctn {
-    @apply flex flex-col justify-between h-full w-full bg-primary-900 px-4 py-1.5 max-w-[500px] transition-all duration-200;
+    @apply flex flex-col justify-between h-full w-full bg-secondary px-4 py-1.5 max-w-[500px] transition-all duration-200;
 }
 
 header .logo-ctn {
@@ -12,7 +12,7 @@ header .logo-ctn {
 .close-btn {
     @apply hover:bg-primary px-1.5 py-1 rounded-lg transition-all duration-200;
 }
-.notes-ctn, .whiteboard-ctn {
+.saved-notes-ctn, .whiteboard-ctn {
     @apply space-y-2 border-t-2 border-primary px-1;
 }
 .footer-ctn {

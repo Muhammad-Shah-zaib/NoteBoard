@@ -1,4 +1,4 @@
-const Notes = () => {
+const SavedNotes = () => {
     const notes = [
         { title: 'Redux Core' },
         { title: 'Redact redux' },
@@ -11,7 +11,7 @@ const Notes = () => {
     ];
     return (
         <>
-            <div className={`notes-ctn`}>
+            <div className={`saved-notes-ctn`}>
                 <h3 className={`px-2 pt-2 font-mono text-lg font-bold`}>
                     Notes
                 </h3>
@@ -41,4 +41,4 @@ const Notes = () => {
     );
 };
 
-export default Notes;
+export default SavedNotes;

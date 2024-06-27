@@ -7,7 +7,7 @@ import Profile from './Profile.tsx';
 import SearchBtnSvg from '../../../assets/button-svgs/SearchBtnSvg.tsx';
 import HomeBtnSvg from '../../../assets/button-svgs/HomeBtnSvg.tsx';
 import SettingsBtnSvg from '../../../assets/button-svgs/SettingsBtnSvg.tsx';
-import Notes from './Notes.tsx';
+import SavedNotes from './SavedNotes.tsx';
 import Footer from './Footer.tsx';
 import React, { useRef } from 'react';
 
@@ -53,19 +53,19 @@ function SideBar({ sideBarCtnRef, contentCtnRef, openBtnCtnRef }: Props) {
                     {/* button-svgs for setting search Home */}
                     <div className={`gap-4 space-y-0.5 py-6`}>
                         <div
-                            className={`flex cursor-pointer items-center gap-2 px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
+                            className={`flex cursor-pointer items-center gap-2 px-2 py-1 transition-all duration-300 hover:bg-primary`}
                         >
                             <Button>{<SearchBtnSvg />}</Button>
                             <span>Search</span>
                         </div>
                         <div
-                            className={`flex cursor-pointer items-center gap-2 px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
+                            className={`flex cursor-pointer items-center gap-2 px-2 py-1 transition-all duration-300 hover:bg-primary`}
                         >
                             <Button>{<HomeBtnSvg />}</Button>
                             <span>Home</span>
                         </div>
                         <div
-                            className={`flex cursor-pointer items-center gap-2 px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
+                            className={`flex cursor-pointer items-center gap-2 px-2 py-1 transition-all duration-300 hover:bg-primary`}
                         >
                             <Button>{<SettingsBtnSvg />}</Button>
                             <span>Settings</span>
@@ -76,7 +76,7 @@ function SideBar({ sideBarCtnRef, contentCtnRef, openBtnCtnRef }: Props) {
                 <main className={`main-ctn`}>
                     {/* Whiteboard and Whiteboard */}
                     <Whiteboard />
-                    <Notes />
+                    <SavedNotes />
                 </main>
             </div>
 
