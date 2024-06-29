@@ -1,7 +1,11 @@
 import { useAppSelector } from '../../store/store.ts';
 import MarkdownEditor from '@uiw/react-markdown-editor';
+import { ISingleNote } from '../../store/Notes/types.ts';
 
-const NotesContent = () => {
+interface NotesContentProps {
+    currentNote: ISingleNote;
+}
+const NotesContent = ({ currentNotep }: NotesContentProps) => {
     const curNote = useAppSelector((state) => state.notesSlice.currentNote);
     return (
         <div className={`h-full w-full px-[200px]`}>

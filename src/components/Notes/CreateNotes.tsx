@@ -7,10 +7,13 @@ import CreateNotesDialogue from './CreateNotesDialogue.tsx';
 import { createNote } from '../../store/Notes/NotesSlice.ts';
 import { useAppDispatch } from '../../store/store.ts';
 import { ISingleNote } from '../../store/Notes/types.ts';
+import BackIcon from '../../assets/button-svgs/BackIcon.tsx';
+import { useNavigate } from 'react-router-dom';
 
 const CreateNotes = () => {
     // store Hooks
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     // Hooks
     const dialogueId = useId();
     const titleInputRef = useRef<HTMLInputElement>(null);
@@ -21,10 +24,12 @@ const CreateNotes = () => {
             "print('Happy coding')\n" +
             '```',
     );
+
+    // Event handlers
     const handleUpdateContent = (state: string) => {
         setContent(state);
     };
-
+    const handleBack = () => navigate('/');
     const handleClear = () => setContent('');
     const handleSave = () => {
         if (content) {
@@ -66,13 +71,23 @@ const CreateNotes = () => {
                     <div
                         className={`flex justify-between border-b-2 border-primary-700 px-4 py-1`}
                     >
-                        {/*clear button*/}
-                        <Button
-                            onClick={handleClear}
-                            className={`rounded border-2 border-red-700 px-4 py-0.5 transition-all duration-200 hover:bg-red-700`}
-                        >
-                            Clear
-                        </Button>
+                        <div className={`flex items-center space-x-4`}>
+                            {/*Back button*/}
+                            <Button
+                                onClick={handleBack}
+                                className={`p-1 shadow-sm shadow-secondary transition-all duration-200 hover:bg-secondary`}
+                            >
+                                <BackIcon />
+                            </Button>
+                            {/*clear button*/}
+                            <Button
+                                onClick={handleClear}
+                                className={`rounded border-2 border-red-700 px-4 py-0.5 transition-all duration-200 hover:bg-red-700`}
+                            >
+                                Clear
+                            </Button>
+                        </div>
+
                         {/*Save Button*/}
                         <Button
                             onClick={handleSave}

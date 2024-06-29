@@ -1,17 +1,19 @@
 import { Link } from 'react-router-dom';
 import WriteIcon from '../../../assets/button-svgs/WriteIcon.tsx';
+import { ISingleNote } from '../../../store/Notes/types.ts';
+import React from 'react';
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 
-const SavedNotes = () => {
-    const notes = [
-        { title: 'Redux Core' },
-        { title: 'Redact redux' },
-        { title: 'MATH CLASS-5' },
-        { title: 'Daily Todos' },
-        { title: 'Partial Fractions' },
-        { title: 'Partial Fractions' },
-        { title: 'Partial Fractions' },
-        { title: 'Partial Fractions' },
-    ];
+// exporting this interface as it is needed for the container
+export interface SavedNotesProps {
+    notes: ISingleNote[];
+    updateCurrentNote: ActionCreatorWithPayload<ISingleNote, string>;
+}
+const SavedNotes: React.FC<SavedNotesProps> = ({
+    notes,
+    updateCurrentNote,
+}) => {
+    console.log(notes);
     return (
         <>
             <div className={`saved-notes-ctn`}>
@@ -41,6 +43,7 @@ const SavedNotes = () => {
                         .map((n, i) => (
                             <div
                                 key={i}
+                                onClick={() => updateCurrentNote(n)}
                                 className={`cursor-pointer rounded-lg px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
                             >
                                 <span className={`text-sm`}>{n.title}</span>

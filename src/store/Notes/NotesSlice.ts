@@ -1,5 +1,10 @@
 import { INotesState, ISingleNote } from './types.ts';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+    createDraftSafeSelector,
+    createSlice,
+    PayloadAction,
+} from '@reduxjs/toolkit';
+import { RootState } from '../store.ts';
 
 const str =
     '# Table of Contents\n' +
@@ -57,8 +62,22 @@ export const notesSlice = createSlice({
             state.notes.push(action.payload);
             state.currentNote = action.payload;
         },
+        updateCurrentNote: (state, action: PayloadAction<ISingleNote>) => {
+            state.currentNote = action.payload;
+        },
     },
 });
 
-export const { createNote } = notesSlice.actions;
+export const { createNote, updateCurrentNote } = notesSlice.actions;
 export default notesSlice.reducer;
+
+// selectors
+export const notesSelector = createDraftSafeSelector(
+    [(NotesState: RootState) => NotesState.notesSlice.notes],
+    (notes) => notes,
+);
+
+export const currentNoteSelector = createDraftSafeSelector(
+    [(state: RootState) => state.notesSlice.currentNote],
+    (currentNote) => currentNote,
+);

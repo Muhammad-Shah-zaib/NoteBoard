@@ -7,9 +7,9 @@ import Profile from './Profile.tsx';
 import SearchBtnSvg from '../../../assets/button-svgs/SearchBtnSvg.tsx';
 import HomeBtnSvg from '../../../assets/button-svgs/HomeBtnSvg.tsx';
 import SettingsBtnSvg from '../../../assets/button-svgs/SettingsBtnSvg.tsx';
-import SavedNotes from './SavedNotes.tsx';
 import Footer from './Footer.tsx';
 import React, { useRef } from 'react';
+import SavedNotesContainer from '../../../containers/SavedNotesContainer.tsx';
 
 interface Props {
     sideBarCtnRef: React.RefObject<HTMLDivElement>;
@@ -76,7 +76,7 @@ function SideBar({ sideBarCtnRef, contentCtnRef, openBtnCtnRef }: Props) {
                 <main className={`main-ctn`}>
                     {/* Whiteboard and Whiteboard */}
                     <Whiteboard />
-                    <SavedNotes />
+                    <SavedNotesContainer />
                 </main>
             </div>
 
