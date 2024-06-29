@@ -1,9 +1,9 @@
 import MarkdownEditor from '@uiw/react-markdown-editor';
-import { useId, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import Button from '../../shared/button/Button.tsx';
 import Dialogue from '../../shared/components/dialogue/Dialogue.tsx';
 import { showComponent } from '../../utils/visibility.ts';
-import SaveNotesDialogue from './SaveNotesDialogue.tsx';
+import CreateNotesDialogue from './CreateNotesDialogue.tsx';
 import { createNote } from '../../store/Notes/NotesSlice.ts';
 import { useAppDispatch } from '../../store/store.ts';
 import { ISingleNote } from '../../store/Notes/types.ts';
@@ -13,6 +13,7 @@ const CreateNotes = () => {
     const dispatch = useAppDispatch();
     // Hooks
     const dialogueId = useId();
+    const titleInputRef = useRef<HTMLInputElement>(null);
     const [content, setContent] = useState<string>(
         '# Hello world\n' +
             '\n' +
@@ -26,8 +27,10 @@ const CreateNotes = () => {
 
     const handleClear = () => setContent('');
     const handleSave = () => {
-        if (content) showComponent(dialogueId);
-        else alert('Please provide a content to save');
+        if (content) {
+            showComponent(dialogueId);
+            titleInputRef.current?.focus();
+        } else alert('Please provide a content to save');
     };
 
     // following function is passed in the dialogue component instead of passing the content directly
@@ -42,7 +45,8 @@ const CreateNotes = () => {
     return (
         <>
             <Dialogue id={dialogueId}>
-                <SaveNotesDialogue
+                <CreateNotesDialogue
+                    titleInputRef={titleInputRef}
                     createNotes={createNotes}
                     dialogueId={dialogueId}
                 />

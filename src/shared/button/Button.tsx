@@ -5,11 +5,13 @@ interface props {
     children: React.ReactNode;
     className?: string;
     onClick?: (e?: any) => unknown;
+    type?: 'button' | 'submit' | 'reset' | undefined;
+    id?: string;
 }
 
-function Button({ children, className, onClick }: props) {
+function Button({ children, className, onClick, type, id }: props) {
     return (
-        <button onClick={onClick} className={className}>
+        <button id={id} onClick={onClick} className={className} type={type}>
             {children}
         </button>
     );

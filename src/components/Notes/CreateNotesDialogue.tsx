@@ -1,18 +1,22 @@
 import Button from '../../shared/button/Button.tsx';
 import { hideComponent } from '../../utils/visibility.ts';
 import CloseIcon from '../../assets/button-svgs/CloseIcon.tsx';
-import React, { useRef, useState } from 'react';
+import React, { MutableRefObject, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface dialogueProps {
     dialogueId: string;
     createNotes: (title: string) => void;
+    titleInputRef: MutableRefObject<HTMLInputElement | null>;
 }
-const SaveNotesDialogue = ({ dialogueId, createNotes }: dialogueProps) => {
+const CreateNotesDialogue = ({
+    dialogueId,
+    createNotes,
+    titleInputRef,
+}: dialogueProps) => {
     // router Hooks
     const navigate = useNavigate();
     // Hooks
-    const titleInputRef = useRef<HTMLInputElement>(null);
     const [error, setError] = useState<boolean>(false);
 
     const handleOnChange = () => {
@@ -26,6 +30,12 @@ const SaveNotesDialogue = ({ dialogueId, createNotes }: dialogueProps) => {
             navigate('/');
         } else setError(true);
     };
+    const handleCLose = () => {
+        hideComponent(dialogueId);
+        setError(false);
+        titleInputRef.current!.value = '';
+    };
+    ``;
     return (
         <div className={`flex w-full flex-col gap-4 p-4`}>
             {/*header*/}
@@ -34,8 +44,9 @@ const SaveNotesDialogue = ({ dialogueId, createNotes }: dialogueProps) => {
             >
                 <h1 className={`font-mono text-xl font-bold`}>Saving notes</h1>
                 <Button
+                    id={`dialogue-close-btn`}
                     className={`rounded-full transition-all duration-200 hover:bg-red-500`}
-                    onClick={() => hideComponent(dialogueId)}
+                    onClick={handleCLose}
                 >
                     <CloseIcon />
                 </Button>
@@ -68,7 +79,17 @@ const SaveNotesDialogue = ({ dialogueId, createNotes }: dialogueProps) => {
                     )}
                 </div>
                 {/* footer of form*/}
-                <div className={`flex w-full items-center justify-end gap-4`}>
+                <div
+                    className={`flex w-full flex-row-reverse items-center gap-4`}
+                >
+                    <Button
+                        id={`submit-button`}
+                        type={'submit'}
+                        onClick={handleSave}
+                        className={`rounded-lg border-2 border-green-700 px-4 py-1.5 text-center transition-all duration-200 hover:bg-green-700`}
+                    >
+                        Save
+                    </Button>
                     <Button
                         onClick={(e: React.MouseEvent) => {
                             e.preventDefault();
@@ -78,15 +99,9 @@ const SaveNotesDialogue = ({ dialogueId, createNotes }: dialogueProps) => {
                     >
                         Back
                     </Button>
-                    <Button
-                        onClick={handleSave}
-                        className={`rounded-lg border-2 border-green-700 px-4 py-1.5 text-center transition-all duration-200 hover:bg-green-700`}
-                    >
-                        Save
-                    </Button>
                 </div>
             </form>
         </div>
     );
 };
-export default SaveNotesDialogue;
+export default CreateNotesDialogue;
