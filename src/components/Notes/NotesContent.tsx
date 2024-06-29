@@ -2,7 +2,7 @@ import { useAppSelector } from '../../store/store.ts';
 import MarkdownEditor from '@uiw/react-markdown-editor';
 
 const NotesContent = () => {
-    const curNote = useAppSelector((state) => state.notes);
+    const curNote = useAppSelector((state) => state.notesSlice.currentNote);
     return (
         <div className={`h-full w-full px-[200px]`}>
             {/* Header */}

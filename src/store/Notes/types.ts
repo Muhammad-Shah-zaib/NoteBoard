@@ -1,4 +1,9 @@
-export interface INotesState {
+export interface ISingleNote {
+    id?: number;
     title: string;
-    content: string; // this will contain the markdown language
+    content: string;
+}
+export interface INotesState {
+    notes: ISingleNote[];
+    currentNote: ISingleNote;
 }

@@ -1,4 +1,4 @@
-import { INotesState } from './types.ts';
+import { INotesState, ISingleNote } from './types.ts';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const str =
@@ -40,23 +40,25 @@ const str =
     '\n' +
     "These methods enhance Redux's functionality and flexibility, making it easier to manage application state in large-scale JavaScript applications.\n";
 
-export const initialState: INotesState = {
+const obj = {
     title: 'Redux Core',
     content: str,
+};
+export const initialState: INotesState = {
+    notes: [],
+    currentNote: obj,
 };
 
 export const notesSlice = createSlice({
     name: 'notes',
     initialState,
     reducers: {
-        updateTitle: (state, action: PayloadAction<string>) => {
-            state.title = action.payload;
-        },
-        updateContent: (state, action: PayloadAction<string>) => {
-            state.content = action.payload;
+        createNote: (state, action: PayloadAction<ISingleNote>) => {
+            state.notes.push(action.payload);
+            state.currentNote = action.payload;
         },
     },
 });
 
-export const { updateTitle, updateContent } = notesSlice.actions;
+export const { createNote } = notesSlice.actions;
 export default notesSlice.reducer;

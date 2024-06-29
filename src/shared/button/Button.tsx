@@ -4,7 +4,7 @@ import React from 'react';
 interface props {
     children: React.ReactNode;
     className?: string;
-    onClick?: () => unknown;
+    onClick?: (e?: any) => unknown;
 }
 
 function Button({ children, className, onClick }: props) {
