@@ -1,5 +1,5 @@
 import './Notes.css';
-import NotesContent from './NotesContent.tsx';
+import NotesContentContainer from '../../containers/NotesContentContainer.tsx';
 const Notes = () => {
     return (
         <div className={'notes-ctn'}>
@@ -7,7 +7,7 @@ const Notes = () => {
             <header className={`h-1/5 w-full`}>
                 {/* image */}
                 <div
-                    className={`shadow-secondary relative h-full w-full opacity-80 shadow-lg`}
+                    className={`relative h-full w-full opacity-80 shadow-lg shadow-secondary`}
                 >
                     <img
                         src={`defaultNotesPic.jpg`}
@@ -18,7 +18,7 @@ const Notes = () => {
             </header>
 
             <main className={`h-3/4`}>
-                <NotesContent />
+                <NotesContentContainer />
             </main>
         </div>
     );
