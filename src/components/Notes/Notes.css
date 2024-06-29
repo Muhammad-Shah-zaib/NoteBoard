@@ -1,3 +1,7 @@
 .notes-ctn {
     @apply flex h-[100vh] w-full flex-col space-y-8 overflow-auto overflow-x-hidden bg-primary;
 }
+
+.create-notes-ctn {
+    @apply grid grid-cols-2 gap-4 h-[100vh] overflow-hidden pb-4;
+}

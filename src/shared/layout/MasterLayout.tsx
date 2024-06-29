@@ -3,7 +3,7 @@ import './MasterLayout.css';
 import { useRef } from 'react';
 import Button from '../button/Button.tsx';
 import DoubleArrowSvg from '../../assets/button-svgs/DoubleArrowSvg.tsx';
-import Notes from '../../components/Notes/Notes.tsx';
+import {Outlet} from "react-router-dom";
 
 function MasterLayout() {
     const sideBarCtnRef = useRef<HTMLDivElement>(null);
@@ -49,7 +49,7 @@ function MasterLayout() {
                     </Button>
                 </span>
                 {/* Content Component */}
-                <Notes />
+                <Outlet />
             </div>
         </div>
     );
