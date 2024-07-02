@@ -6,5 +6,14 @@ export interface ISingleNote {
 }
 export interface INotesState {
     notes: ISingleNote[];
+    fetchingNotes: boolean;
     currentNote: ISingleNote | null;
+}
+export interface IAddNoteRequestDto extends ISingleNote {}
+export interface IAddNoteResponseDto {
+    statusCode: number;
+    ok: boolean;
+    message: string;
+    note: ISingleNote;
+    error: string[];
 }

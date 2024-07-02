@@ -1,27 +1,17 @@
-import { INotesState, ISingleNote } from './types.ts';
+import { IAddNoteResponseDto, INotesState, ISingleNote } from './types.ts';
 import {
-    createAsyncThunk,
     createDraftSafeSelector,
     createSlice,
     PayloadAction,
 } from '@reduxjs/toolkit';
 import { RootState } from '../store.ts';
-import { GET_NOTES_BY_ID_ENDPOINT } from '../../environment/environment.ts';
+import { createCaseAsync, fetchNotesById } from './notesApis.ts';
 
 export const initialState: INotesState = {
     notes: [],
+    fetchingNotes: false,
     currentNote: null,
 };
-
-const FETCH_NOTES_BY_ID_ACTION = 'notes/fetchNotesById';
-export const fetchNotesById = createAsyncThunk<
-    ISingleNote[],
-    number,
-    { state: INotesState }
->(FETCH_NOTES_BY_ID_ACTION, async (id: number) => {
-    const response = await fetch(GET_NOTES_BY_ID_ENDPOINT + id);
-    return await response.json();
-});
 
 export const notesSlice = createSlice({
     name: 'notes',
@@ -36,13 +26,31 @@ export const notesSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(
-            fetchNotesById.fulfilled,
-            (state, action: PayloadAction<ISingleNote[]>) => {
-                state.notes = action.payload;
-                console.log(action);
-            },
-        );
+        builder
+            .addCase(
+                fetchNotesById.fulfilled,
+                (state, action: PayloadAction<ISingleNote[]>) => {
+                    state.notes = action.payload;
+                    // since the notes are fetched, we can set the current note to the first note
+                    if (!state.currentNote)
+                        state.currentNote = action.payload[0];
+                    console.log(action);
+                },
+            )
+            .addCase(fetchNotesById.pending, (state) => {
+                // updating state for showing loading spinners
+                state.fetchingNotes = true;
+            })
+            .addCase(
+                createCaseAsync.fulfilled,
+                (state, { payload }: PayloadAction<IAddNoteResponseDto>) => {
+                    if (!payload.ok) {
+                        /* empty -> // need to set error here */
+                    } else if (payload.statusCode === 200) {
+                        state.notes.push(payload.note);
+                    }
+                },
+            );
     },
 });
 export const { createNote, updateCurrentNote } = notesSlice.actions;

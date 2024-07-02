@@ -5,7 +5,7 @@ import NotesContent from '../components/Notes/NotesContent.tsx';
 import { ISingleNote } from '../store/Notes/types.ts';
 
 type TMapStateToProps = (state: RootState) => {
-    currentNote: ISingleNote;
+    currentNote: ISingleNote | null;
 };
 const mapStateToProps: TMapStateToProps = (state: RootState) => ({
     currentNote: currentNoteSelector(state),

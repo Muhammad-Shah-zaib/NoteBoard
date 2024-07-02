@@ -4,15 +4,17 @@ import Button from '../../shared/button/Button.tsx';
 import Dialogue from '../../shared/components/dialogue/Dialogue.tsx';
 import { showComponent } from '../../utils/visibility.ts';
 import CreateNotesDialogue from './CreateNotesDialogue.tsx';
-import { createNote } from '../../store/Notes/NotesSlice.ts';
-import { useAppDispatch } from '../../store/store.ts';
-import { ISingleNote } from '../../store/Notes/types.ts';
+import { IAddNoteRequestDto, ISingleNote } from '../../store/Notes/types.ts';
 import BackIcon from '../../assets/button-svgs/BackIcon.tsx';
 import { useNavigate } from 'react-router-dom';
 
-const CreateNotes = () => {
+interface CreateNotesProps {
+    loading: boolean;
+    createCaseAsync: (requestData: IAddNoteRequestDto) => void;
+}
+
+const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
     // store Hooks
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     // Hooks
     const dialogueId = useId();
@@ -44,8 +46,9 @@ const CreateNotes = () => {
         const obj: ISingleNote = {
             title,
             content,
+            userId: 1,
         };
-        dispatch(createNote(obj));
+        createCaseAsync(obj);
     };
     return (
         <>
