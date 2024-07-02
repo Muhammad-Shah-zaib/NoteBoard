@@ -1,4 +1,4 @@
-import { notesSelector } from '../store/Notes/NotesSlice.ts';
+import { fetchNotesById, notesSelector } from '../store/Notes/NotesSlice.ts';
 import { connect } from 'react-redux';
 import SavedNotes from '../shared/components/SideBar/SavedNotes.tsx';
 import { AppDispatch, RootState } from '../store/store.ts';
@@ -17,9 +17,11 @@ const mapDispatchToProps: TMapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {
             updateCurrentNote,
+            fetchNotesById,
         },
         dispatch,
     );
+
 const SavedNotesContainer = connect(
     mapStateToProps,
     mapDispatchToProps,

@@ -1,19 +1,23 @@
 import { Link } from 'react-router-dom';
 import WriteIcon from '../../../assets/button-svgs/WriteIcon.tsx';
 import { ISingleNote } from '../../../store/Notes/types.ts';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 
 // exporting this interface as it is needed for the container
 export interface SavedNotesProps {
     notes: ISingleNote[];
     updateCurrentNote: ActionCreatorWithPayload<ISingleNote, string>;
+    fetchNotesById: (id: number) => void;
 }
 const SavedNotes: React.FC<SavedNotesProps> = ({
     notes,
     updateCurrentNote,
+    fetchNotesById,
 }) => {
-    console.log(notes);
+    useEffect(() => {
+        fetchNotesById(1);
+    }, []);
     return (
         <>
             <div className={`saved-notes-ctn`}>
@@ -30,25 +34,27 @@ const SavedNotes: React.FC<SavedNotesProps> = ({
                 </div>
                 {/* existing whiteboards */}
                 <div>
-                    {notes
-                        .filter((n, i) => {
-                            if (i < 3) {
-                                if (n.title.length > 20) {
-                                    n.title = n.title.substring(0, 20) + '...';
+                    {notes &&
+                        notes
+                            .filter((n, i) => {
+                                if (i < 3) {
+                                    if (n.title.length > 20) {
+                                        n.title =
+                                            n.title.substring(0, 20) + '...';
+                                    }
+                                    return true;
                                 }
-                                return true;
-                            }
-                            return false;
-                        })
-                        .map((n, i) => (
-                            <div
-                                key={i}
-                                onClick={() => updateCurrentNote(n)}
-                                className={`cursor-pointer rounded-lg px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
-                            >
-                                <span className={`text-sm`}>{n.title}</span>
-                            </div>
-                        ))}
+                                return false;
+                            })
+                            .map((n, i) => (
+                                <div
+                                    key={i}
+                                    onClick={() => updateCurrentNote(n)}
+                                    className={`cursor-pointer rounded-lg px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
+                                >
+                                    <span className={`text-sm`}>{n.title}</span>
+                                </div>
+                            ))}
                 </div>
             </div>
         </>
