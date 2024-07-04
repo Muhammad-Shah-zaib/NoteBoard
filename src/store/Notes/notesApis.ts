@@ -4,10 +4,12 @@ import {
     IAddNoteResponseDto,
     INotesState,
     ISingleNote,
+    IUpdateNoteRequest,
+    IUpdateNoteResponse,
 } from './types.ts';
 import { NOTES_ENDPOINT } from '../../environment/environment.ts';
-import { AppDispatch } from '../store.ts';
 import { createNote } from './NotesSlice.ts';
+import { AppDispatch } from '../store.ts';
 
 export const GET_NOTES_BY_ID = 'notes/fetchNotesById';
 export const fetchNotesById = createAsyncThunk<
@@ -27,7 +29,7 @@ export const CREATE_NOTES_ACTION = 'notes/postNote';
 export const createCaseAsync = createAsyncThunk<
     IAddNoteResponseDto,
     IAddNoteRequestDto,
-    { dispatch: AppDispatch }
+    { state: INotesState; dispatch: AppDispatch }
 >(
     CREATE_NOTES_ACTION,
     async (requestBody: IAddNoteRequestDto, { dispatch }) => {
@@ -47,3 +49,21 @@ export const createCaseAsync = createAsyncThunk<
         return response;
     },
 );
+
+export const UPDATE_NOTES_ACTION = 'notes/updateNote';
+export const updateNoteAsync = createAsyncThunk<
+    IUpdateNoteResponse,
+    IUpdateNoteRequest,
+    { state: INotesState }
+>(UPDATE_NOTES_ACTION, async (requestBody: IUpdateNoteRequest) => {
+    const requestOptions = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+    };
+    const response = await fetch(NOTES_ENDPOINT, requestOptions);
+    fetchNotesById(requestBody.userId); // fetch the notes again
+    return response.json();
+});

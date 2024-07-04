@@ -2,11 +2,10 @@ import { createCaseAsync } from '../store/Notes/notesApis.ts';
 import { bindActionCreators } from '@reduxjs/toolkit';
 import { connect } from 'react-redux';
 import { AppDispatch, RootState } from '../store/store.ts';
-import { IAddNoteRequestDto } from '../store/Notes/types.ts';
 import CreateNotes from '../components/Notes/CreateNotes.tsx';
 
 type TMapDispatchToProps = (dispatch: AppDispatch) => {
-    createCaseAsync: (requestData: IAddNoteRequestDto) => void;
+    createCaseAsync: typeof createCaseAsync;
 };
 
 const mapStateToProps = (state: RootState) => {

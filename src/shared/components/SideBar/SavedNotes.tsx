@@ -3,6 +3,7 @@ import WriteIcon from '../../../assets/button-svgs/WriteIcon.tsx';
 import { ISingleNote } from '../../../store/Notes/types.ts';
 import React, { useEffect } from 'react';
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
+import EditBtnSvg from '../../../assets/button-svgs/EditBtnSvg.tsx';
 
 // exporting this interface as it is needed for the container
 export interface SavedNotesProps {
@@ -36,23 +37,25 @@ const SavedNotes: React.FC<SavedNotesProps> = ({
                 <div>
                     {notes &&
                         notes
-                            .filter((n, i) => {
-                                if (i < 3) {
-                                    if (n.title.length > 20) {
-                                        n.title =
-                                            n.title.substring(0, 20) + '...';
-                                    }
-                                    return true;
-                                }
-                                return false;
-                            })
+                            .map((n) => ({
+                                ...n,
+                                title:
+                                    n.title.length > 20
+                                        ? n.title.substring(0, 20) + '...'
+                                        : n.title,
+                            }))
                             .map((n, i) => (
                                 <div
                                     key={i}
                                     onClick={() => updateCurrentNote(n)}
-                                    className={`cursor-pointer rounded-lg px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
+                                    className={`group flex cursor-pointer items-center justify-between gap-4 rounded-lg px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
                                 >
                                     <span className={`text-sm`}>{n.title}</span>
+                                    <span
+                                        className={`pointer-events-none invisible p-1 transition-all duration-200 hover:bg-primary-700 group-hover:pointer-events-auto group-hover:visible`}
+                                    >
+                                        {<EditBtnSvg />}
+                                    </span>
                                 </div>
                             ))}
                 </div>

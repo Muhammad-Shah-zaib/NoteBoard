@@ -1,17 +1,17 @@
 import Button from '../../shared/button/Button.tsx';
 import { hideComponent } from '../../utils/visibility.ts';
-import CloseIcon from '../../assets/button-svgs/CloseIcon.tsx';
+import CloseBtnSvg from '../../assets/button-svgs/CloseBtnSvg.tsx';
 import React, { MutableRefObject, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface dialogueProps {
     dialogueId: string;
-    createNotes: (title: string) => void;
+    createOrUpdateNotes: (title: string) => void;
     titleInputRef: MutableRefObject<HTMLInputElement | null>;
 }
 const CreateNotesDialogue = ({
     dialogueId,
-    createNotes,
+    createOrUpdateNotes,
     titleInputRef,
 }: dialogueProps) => {
     // router Hooks
@@ -26,7 +26,7 @@ const CreateNotesDialogue = ({
         e.preventDefault();
         const title = titleInputRef.current!.value;
         if (titleInputRef.current!.value) {
-            createNotes(title);
+            createOrUpdateNotes(title);
             navigate('/');
         } else setError(true);
     };
@@ -48,7 +48,7 @@ const CreateNotesDialogue = ({
                     className={`rounded-full transition-all duration-200 hover:bg-red-500`}
                     onClick={handleCLose}
                 >
-                    <CloseIcon />
+                    <CloseBtnSvg />
                 </Button>
             </div>
             {/*main content*/}

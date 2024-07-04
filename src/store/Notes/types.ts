@@ -17,3 +17,10 @@ export interface IAddNoteResponseDto {
     note: ISingleNote;
     error: string[];
 }
+
+export interface IUpdateNoteRequest extends ISingleNote {
+    id: number;
+}
+export interface IUpdateNoteResponse {
+    message: string;
+}

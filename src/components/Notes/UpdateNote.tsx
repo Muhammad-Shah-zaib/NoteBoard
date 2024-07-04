@@ -4,20 +4,18 @@ import Button from '../../shared/button/Button.tsx';
 import Dialogue from '../../shared/components/dialogue/Dialogue.tsx';
 import { showComponent } from '../../utils/visibility.ts';
 import CreateNotesDialogue from './CreateNotesDialogue.tsx';
-import { ISingleNote } from '../../store/Notes/types.ts';
+import { IUpdateNoteRequest } from '../../store/Notes/types.ts';
 import BackBtnSvg from '../../assets/button-svgs/BackBtnSvg.tsx';
 import { useNavigate } from 'react-router-dom';
-import { createCaseAsync } from '../../store/Notes/notesApis.ts';
+import { updateNoteAsync } from '../../store/Notes/notesApis.ts';
 
-interface CreateNotesProps {
-    loading: boolean;
-    createCaseAsync: typeof createCaseAsync;
+export interface IUpdateNoteProps {
+    updateNoteAsync: typeof updateNoteAsync;
 }
 
-const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
-    // store Hooks
-    const navigate = useNavigate();
+const UpdateNote: React.FC<IUpdateNoteProps> = ({ updateNoteAsync }) => {
     // Hooks
+    const navigate = useNavigate();
     const dialogueId = useId();
     const titleInputRef = useRef<HTMLInputElement>(null);
     const [content, setContent] = useState<string>(
@@ -41,30 +39,29 @@ const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
         } else alert('Please provide a content to save');
     };
 
-    // following function is passed in the dialogue component instead of passing the content directly
-    // there is no validations check in the function so validations should be applied before calling this Fn
-    const createNotes = (title: string) => {
-        const obj: ISingleNote = {
+    // Function to update note
+    const updateNote = (title: string) => {
+        const obj: IUpdateNoteRequest = {
+            id: 1,
             title,
             content,
             userId: 1,
         };
-        createCaseAsync(obj);
+        updateNoteAsync(obj);
     };
+
     return (
         <>
             <Dialogue id={dialogueId}>
                 <CreateNotesDialogue
                     titleInputRef={titleInputRef}
-                    createOrUpdateNotes={createNotes}
+                    createOrUpdateNotes={updateNote}
                     dialogueId={dialogueId}
                 />
             </Dialogue>
 
             <div className={`create-notes-ctn overflow-hidden`}>
-                {/*dialog for title of the notes*/}
-
-                {/*markdown editor*/}
+                {/* Markdown editor */}
                 <MarkdownEditor
                     value={content}
                     enablePreview={false}
@@ -76,14 +73,14 @@ const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
                         className={`flex justify-between border-b-2 border-primary-700 px-4 py-1`}
                     >
                         <div className={`flex items-center space-x-4`}>
-                            {/*Back button*/}
+                            {/* Back button */}
                             <Button
                                 onClick={handleBack}
                                 className={`p-1 shadow-sm shadow-secondary transition-all duration-200 hover:bg-secondary`}
                             >
                                 <BackBtnSvg />
                             </Button>
-                            {/*clear button*/}
+                            {/* Clear button */}
                             <Button
                                 onClick={handleClear}
                                 className={`rounded border-2 border-red-700 px-4 py-0.5 transition-all duration-200 hover:bg-red-700`}
@@ -92,7 +89,7 @@ const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
                             </Button>
                         </div>
 
-                        {/*Save Button*/}
+                        {/* Save Button */}
                         <Button
                             onClick={handleSave}
                             className={`rounded border-2 border-green-700 px-4 py-0.5 transition-all duration-200 hover:bg-green-700`}
@@ -100,6 +97,7 @@ const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
                             Save
                         </Button>
                     </div>
+                    {/* Markdown preview */}
                     <MarkdownEditor.Markdown
                         source={content}
                         className={`mb-4 h-[95vh] overflow-auto bg-primary px-6 py-2 shadow-lg shadow-secondary`}
@@ -110,4 +108,4 @@ const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
     );
 };
 
-export default CreateNotes;
+export default UpdateNote;

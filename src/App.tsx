@@ -3,6 +3,7 @@ import './App.css';
 import MasterLayout from './shared/layout/MasterLayout';
 import Notes from './components/Notes/Notes.tsx';
 import CreateNotesContainer from './containers/CreateNotesContainer.tsx';
+import UpdateNoteContainer from './containers/updateNoteContainer.tsx';
 
 function App() {
     return (
@@ -16,6 +17,10 @@ function App() {
                         <Route
                             path={'create-notes'}
                             element={<CreateNotesContainer />}
+                        />
+                        <Route
+                            path={`update-notes`}
+                            element={<UpdateNoteContainer />}
                         />
                     </Route>
                 </Routes>

@@ -34,7 +34,6 @@ export const notesSlice = createSlice({
                     // since the notes are fetched, we can set the current note to the first note
                     if (!state.currentNote)
                         state.currentNote = action.payload[0];
-                    console.log(action);
                 },
             )
             .addCase(fetchNotesById.pending, (state) => {
@@ -46,9 +45,8 @@ export const notesSlice = createSlice({
                 (state, { payload }: PayloadAction<IAddNoteResponseDto>) => {
                     if (!payload.ok) {
                         /* empty -> // need to set error here */
-                    } else if (payload.statusCode === 200) {
-                        state.notes.push(payload.note);
                     }
+                    console.log(state.notes);
                 },
             );
     },
