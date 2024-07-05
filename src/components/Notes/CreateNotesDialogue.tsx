@@ -1,41 +1,47 @@
 import Button from '../../shared/button/Button.tsx';
 import { hideComponent } from '../../utils/visibility.ts';
 import CloseBtnSvg from '../../assets/button-svgs/CloseBtnSvg.tsx';
-import React, { MutableRefObject, useState } from 'react';
+import React, { ChangeEvent, RefObject, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface dialogueProps {
     dialogueId: string;
-    createOrUpdateNotes: (title: string) => void;
-    titleInputRef: MutableRefObject<HTMLInputElement | null>;
+    createOrUpdateNotes: () => void;
+    titleInputRef: RefObject<HTMLInputElement>;
+    titleState: string;
+    setTitleState: (title: string) => void;
 }
 const CreateNotesDialogue = ({
     dialogueId,
     createOrUpdateNotes,
     titleInputRef,
+    titleState,
+    setTitleState,
 }: dialogueProps) => {
     // router Hooks
     const navigate = useNavigate();
     // Hooks
     const [error, setError] = useState<boolean>(false);
 
-    const handleOnChange = () => {
-        if (error || !titleInputRef.current!.value) setError(false);
+    const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (error || titleState === '') setError(false);
+        setTitleState(e.target.value);
     };
-    const handleSave = (e: React.MouseEvent) => {
-        e.preventDefault();
-        const title = titleInputRef.current!.value;
-        if (titleInputRef.current!.value) {
-            createOrUpdateNotes(title);
-            navigate('/');
-        } else setError(true);
-    };
+
     const handleCLose = () => {
         hideComponent(dialogueId);
         setError(false);
-        titleInputRef.current!.value = '';
+        setTitleState('');
     };
-    ``;
+
+    const handleSave = (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (titleState !== '') {
+            createOrUpdateNotes();
+            navigate('/');
+        } else setError(true);
+    };
+
     return (
         <div className={`flex w-full flex-col gap-4 p-4`}>
             {/*header*/}
@@ -65,6 +71,7 @@ const CreateNotesDialogue = ({
                     </label>
                     <input
                         ref={titleInputRef}
+                        value={titleState}
                         id={`title-input`}
                         onChange={handleOnChange}
                         required

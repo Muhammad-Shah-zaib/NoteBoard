@@ -11,12 +11,18 @@ import { NOTES_ENDPOINT } from '../../environment/environment.ts';
 import { createNote } from './NotesSlice.ts';
 import { AppDispatch } from '../store.ts';
 
-export const GET_NOTES_BY_ID = 'notes/fetchNotesById';
-export const fetchNotesById = createAsyncThunk<
+// ACTIONS
+export const GET_NOTES_BY_USER_ID = 'notes/fetchNotesByUserId';
+export const CREATE_NOTES_ACTION = 'notes/postNote';
+export const UPDATE_NOTES_ACTION = 'notes/updateNote';
+export const GET_NOTE_BY_ID = 'notes/getNoteById';
+
+// THUNKS
+export const fetchNotesByUserId = createAsyncThunk<
     ISingleNote[],
     number,
     { state: INotesState }
->(GET_NOTES_BY_ID, async (id: number) => {
+>(GET_NOTES_BY_USER_ID, async (id: number) => {
     // query params
     const queryParams: URLSearchParams = new URLSearchParams({
         userId: id.toString(),
@@ -25,7 +31,6 @@ export const fetchNotesById = createAsyncThunk<
     return await response.json();
 });
 
-export const CREATE_NOTES_ACTION = 'notes/postNote';
 export const createCaseAsync = createAsyncThunk<
     IAddNoteResponseDto,
     IAddNoteRequestDto,
@@ -50,7 +55,6 @@ export const createCaseAsync = createAsyncThunk<
     },
 );
 
-export const UPDATE_NOTES_ACTION = 'notes/updateNote';
 export const updateNoteAsync = createAsyncThunk<
     IUpdateNoteResponse,
     IUpdateNoteRequest,
@@ -64,6 +68,23 @@ export const updateNoteAsync = createAsyncThunk<
         body: JSON.stringify(requestBody),
     };
     const response = await fetch(NOTES_ENDPOINT, requestOptions);
-    fetchNotesById(requestBody.userId); // fetch the notes again
+    fetchNotesByUserId(requestBody.userId); // fetch the notes again
     return response.json();
 });
+
+export const fetchNoteById = createAsyncThunk<
+    ISingleNote,
+    { userId: number; noteId: number },
+    { state: INotesState }
+>(
+    GET_NOTE_BY_ID,
+    async ({ userId, noteId }: { userId: number; noteId: number }) => {
+        const queryParams: URLSearchParams = new URLSearchParams({
+            userId: userId.toString(),
+        });
+        const res = await fetch(
+            `${NOTES_ENDPOINT}/${noteId}?${queryParams.toString()}`,
+        ).then((res) => res.json());
+        return res;
+    },
+);

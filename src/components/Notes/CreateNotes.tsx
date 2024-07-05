@@ -9,7 +9,7 @@ import BackBtnSvg from '../../assets/button-svgs/BackBtnSvg.tsx';
 import { useNavigate } from 'react-router-dom';
 import { createCaseAsync } from '../../store/Notes/notesApis.ts';
 
-interface CreateNotesProps {
+export interface CreateNotesProps {
     loading: boolean;
     createCaseAsync: typeof createCaseAsync;
 }
@@ -20,6 +20,7 @@ const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
     // Hooks
     const dialogueId = useId();
     const titleInputRef = useRef<HTMLInputElement>(null);
+    const [title, setTitle] = useState<string>('');
     const [content, setContent] = useState<string>(
         '# Hello world\n' +
             '\n' +
@@ -43,7 +44,7 @@ const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
 
     // following function is passed in the dialogue component instead of passing the content directly
     // there is no validations check in the function so validations should be applied before calling this Fn
-    const createNotes = (title: string) => {
+    const createNotes = () => {
         const obj: ISingleNote = {
             title,
             content,
@@ -57,6 +58,8 @@ const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
                 <CreateNotesDialogue
                     titleInputRef={titleInputRef}
                     createOrUpdateNotes={createNotes}
+                    titleState={title}
+                    setTitleState={setTitle}
                     dialogueId={dialogueId}
                 />
             </Dialogue>

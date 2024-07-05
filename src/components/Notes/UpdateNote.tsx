@@ -4,27 +4,28 @@ import Button from '../../shared/button/Button.tsx';
 import Dialogue from '../../shared/components/dialogue/Dialogue.tsx';
 import { showComponent } from '../../utils/visibility.ts';
 import CreateNotesDialogue from './CreateNotesDialogue.tsx';
-import { IUpdateNoteRequest } from '../../store/Notes/types.ts';
+import { ISingleNote, IUpdateNoteRequest } from '../../store/Notes/types.ts';
 import BackBtnSvg from '../../assets/button-svgs/BackBtnSvg.tsx';
 import { useNavigate } from 'react-router-dom';
 import { updateNoteAsync } from '../../store/Notes/notesApis.ts';
 
 export interface IUpdateNoteProps {
     updateNoteAsync: typeof updateNoteAsync;
+    currentNote: ISingleNote;
 }
 
-const UpdateNote: React.FC<IUpdateNoteProps> = ({ updateNoteAsync }) => {
-    // Hooks
+const UpdateNote: React.FC<IUpdateNoteProps> = ({
+    updateNoteAsync,
+    currentNote,
+}) => {
+    // router Hooks
     const navigate = useNavigate();
+
+    // hooks
     const dialogueId = useId();
+    const [content, setContent] = useState<string>(currentNote.content);
+    const [title, setTitle] = useState<string>(currentNote.title);
     const titleInputRef = useRef<HTMLInputElement>(null);
-    const [content, setContent] = useState<string>(
-        '# Hello world\n' +
-            '\n' +
-            '``` python\n' +
-            "print('Happy coding')\n" +
-            '```',
-    );
 
     // Event handlers
     const handleUpdateContent = (state: string) => {
@@ -40,12 +41,12 @@ const UpdateNote: React.FC<IUpdateNoteProps> = ({ updateNoteAsync }) => {
     };
 
     // Function to update note
-    const updateNote = (title: string) => {
+    const updateNote = () => {
         const obj: IUpdateNoteRequest = {
-            id: 1,
+            id: currentNote.id!,
             title,
             content,
-            userId: 1,
+            userId: currentNote.userId,
         };
         updateNoteAsync(obj);
     };
@@ -55,6 +56,8 @@ const UpdateNote: React.FC<IUpdateNoteProps> = ({ updateNoteAsync }) => {
             <Dialogue id={dialogueId}>
                 <CreateNotesDialogue
                     titleInputRef={titleInputRef}
+                    titleState={title}
+                    setTitleState={setTitle}
                     createOrUpdateNotes={updateNote}
                     dialogueId={dialogueId}
                 />
@@ -92,9 +95,9 @@ const UpdateNote: React.FC<IUpdateNoteProps> = ({ updateNoteAsync }) => {
                         {/* Save Button */}
                         <Button
                             onClick={handleSave}
-                            className={`rounded border-2 border-green-700 px-4 py-0.5 transition-all duration-200 hover:bg-green-700`}
+                            className={`rounded border-2 border-yellow-500 px-4 py-0.5 transition-all duration-200 hover:bg-yellow-500 hover:text-black`}
                         >
-                            Save
+                            Update
                         </Button>
                     </div>
                     {/* Markdown preview */}

@@ -1,8 +1,17 @@
-import { AppDispatch } from '../store/store.ts';
+import { AppDispatch, RootState } from '../store/store.ts';
 import { updateNoteAsync } from '../store/Notes/notesApis.ts';
 import { connect } from 'react-redux';
 import { bindActionCreators } from '@reduxjs/toolkit';
 import UpdateNote from '../components/Notes/UpdateNote.tsx';
+import { ISingleNote } from '../store/Notes/types.ts';
+import { currentNoteSelector } from '../store/Notes/NotesSlice.ts';
+
+type TMapStateToProps = (state: RootState) => {
+    currentNote: ISingleNote;
+};
+const mapStateToProps: TMapStateToProps = (state: RootState) => ({
+    currentNote: currentNoteSelector(state)!, // the click will only be available when there is some note already present
+});
 
 type TMapDispatchToProps = (dispatch: AppDispatch) => {
     updateNoteAsync: typeof updateNoteAsync;
@@ -15,5 +24,22 @@ const mapDispatchToProps: TMapDispatchToProps = (dispatch: AppDispatch) =>
         dispatch,
     );
 
-const UpdateNoteContainer = connect(null, mapDispatchToProps)(UpdateNote);
+interface props {
+    updateNoteAsync: typeof updateNoteAsync;
+    currentNote: ISingleNote;
+}
+const UpdateNoteContainer = connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(({ updateNoteAsync, currentNote }: props) => {
+    // we need to fetch the note with the userId
+
+    return (
+        <UpdateNote
+            updateNoteAsync={updateNoteAsync}
+            currentNote={currentNote}
+        />
+    );
+});
+
 export default UpdateNoteContainer;

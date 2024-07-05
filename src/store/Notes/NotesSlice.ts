@@ -5,7 +5,11 @@ import {
     PayloadAction,
 } from '@reduxjs/toolkit';
 import { RootState } from '../store.ts';
-import { createCaseAsync, fetchNotesById } from './notesApis.ts';
+import {
+    createCaseAsync,
+    fetchNoteById,
+    fetchNotesByUserId,
+} from './notesApis.ts';
 
 export const initialState: INotesState = {
     notes: [],
@@ -28,15 +32,14 @@ export const notesSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(
-                fetchNotesById.fulfilled,
+                fetchNotesByUserId.fulfilled,
                 (state, action: PayloadAction<ISingleNote[]>) => {
                     state.notes = action.payload;
                     // since the notes are fetched, we can set the current note to the first note
-                    if (!state.currentNote)
-                        state.currentNote = action.payload[0];
+                    state.currentNote = action.payload[0];
                 },
             )
-            .addCase(fetchNotesById.pending, (state) => {
+            .addCase(fetchNotesByUserId.pending, (state) => {
                 // updating state for showing loading spinners
                 state.fetchingNotes = true;
             })
@@ -47,6 +50,13 @@ export const notesSlice = createSlice({
                         /* empty -> // need to set error here */
                     }
                     console.log(state.notes);
+                },
+            )
+            .addCase(
+                fetchNoteById.fulfilled,
+                (state, { payload }: PayloadAction<ISingleNote>) => {
+                    state.currentNote = payload;
+                    console.log(payload);
                 },
             );
     },

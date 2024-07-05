@@ -5,7 +5,11 @@ import { AppDispatch, RootState } from '../store/store.ts';
 import { updateCurrentNote } from '../store/Notes/NotesSlice.ts';
 import { ActionCreatorWithPayload, bindActionCreators } from '@reduxjs/toolkit';
 import { ISingleNote } from '../store/Notes/types.ts';
-import { fetchNotesById, createCaseAsync } from '../store/Notes/notesApis.ts';
+import {
+    fetchNotesByUserId,
+    createCaseAsync,
+    fetchNoteById,
+} from '../store/Notes/notesApis.ts';
 
 const mapStateToProps = (state: RootState) => ({
     notes: notesSelector(state),
@@ -13,14 +17,16 @@ const mapStateToProps = (state: RootState) => ({
 
 type TMapDispatchToProps = (dispatch: AppDispatch) => {
     updateCurrentNote: ActionCreatorWithPayload<ISingleNote, string>;
-    fetchNotesById: (id: number) => void;
+    fetchNotesByUserId: typeof fetchNotesByUserId;
+    fetchNoteById: typeof fetchNoteById;
 };
 const mapDispatchToProps: TMapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {
             updateCurrentNote,
-            fetchNotesById,
+            fetchNotesByUserId,
             createCaseAsync,
+            fetchNoteById,
         },
         dispatch,
     );

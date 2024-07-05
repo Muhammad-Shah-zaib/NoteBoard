@@ -19,7 +19,7 @@ function App() {
                             element={<CreateNotesContainer />}
                         />
                         <Route
-                            path={`update-notes`}
+                            path={`update-notes/:id`}
                             element={<UpdateNoteContainer />}
                         />
                     </Route>
