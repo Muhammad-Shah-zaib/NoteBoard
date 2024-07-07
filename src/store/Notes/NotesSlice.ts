@@ -9,6 +9,7 @@ import {
     createCaseAsync,
     fetchNoteById,
     fetchNotesByUserId,
+    updateNoteAsync,
 } from './notesApis.ts';
 
 export const initialState: INotesState = {
@@ -28,6 +29,21 @@ export const notesSlice = createSlice({
         updateCurrentNote: (state, action: PayloadAction<ISingleNote>) => {
             state.currentNote = action.payload;
         },
+        updateNoteAndNotes: (
+            state,
+            { payload }: PayloadAction<ISingleNote>,
+        ) => {
+            state.currentNote = payload;
+            state.notes = state.notes.map((n) => {
+                if (n.id === payload.id)
+                    return {
+                        ...n,
+                        content: payload.content,
+                        title: payload.title,
+                    };
+                return n;
+            });
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -36,12 +52,20 @@ export const notesSlice = createSlice({
                 (state, action: PayloadAction<ISingleNote[]>) => {
                     state.notes = action.payload;
                     // since the notes are fetched, we can set the current note to the first note
-                    state.currentNote = action.payload[0];
+                    if (!state.currentNote)
+                        state.currentNote = action.payload[0];
                 },
             )
             .addCase(fetchNotesByUserId.pending, (state) => {
                 // updating state for showing loading spinners
                 state.fetchingNotes = true;
+            })
+            .addCase(updateNoteAsync.fulfilled, (state, { payload }) => {
+                if (payload.ok && payload.statusCode === 200) {
+                    // we need to update the currentNote
+                    state.currentNote = payload.note;
+                    state.notes = payload.notes;
+                }
             })
             .addCase(
                 createCaseAsync.fulfilled,
@@ -61,7 +85,8 @@ export const notesSlice = createSlice({
             );
     },
 });
-export const { createNote, updateCurrentNote } = notesSlice.actions;
+export const { createNote, updateCurrentNote, updateNoteAndNotes } =
+    notesSlice.actions;
 export default notesSlice.reducer;
 
 // selectors

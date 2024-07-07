@@ -42,11 +42,14 @@ const UpdateNote: React.FC<IUpdateNoteProps> = ({
 
     // Function to update note
     const updateNote = () => {
+        console.log(title, content);
         const obj: IUpdateNoteRequest = {
-            id: currentNote.id!,
-            title,
-            content,
             userId: currentNote.userId,
+            noteId: currentNote.id!,
+            body: {
+                title: title,
+                content: content,
+            },
         };
         updateNoteAsync(obj);
     };

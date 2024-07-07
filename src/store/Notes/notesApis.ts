@@ -8,7 +8,7 @@ import {
     IUpdateNoteResponse,
 } from './types.ts';
 import { NOTES_ENDPOINT } from '../../environment/environment.ts';
-import { createNote } from './NotesSlice.ts';
+import { createNote, updateNoteAndNotes } from './NotesSlice.ts';
 import { AppDispatch } from '../store.ts';
 
 // ACTIONS
@@ -58,19 +58,42 @@ export const createCaseAsync = createAsyncThunk<
 export const updateNoteAsync = createAsyncThunk<
     IUpdateNoteResponse,
     IUpdateNoteRequest,
-    { state: INotesState }
->(UPDATE_NOTES_ACTION, async (requestBody: IUpdateNoteRequest) => {
-    const requestOptions = {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-    };
-    const response = await fetch(NOTES_ENDPOINT, requestOptions);
-    fetchNotesByUserId(requestBody.userId); // fetch the notes again
-    return response.json();
-});
+    { state: INotesState; dispatch: AppDispatch }
+>(
+    UPDATE_NOTES_ACTION,
+    async ({ noteId, body, userId }: IUpdateNoteRequest, { dispatch }) => {
+        // Optimistic update: update the local state immediately
+        dispatch(
+            updateNoteAndNotes({
+                id: noteId,
+                userId,
+                ...body,
+            }),
+        );
+        // REQUESTING FOR UPDATE
+        // SEARCH PARAMS
+        const searchParams: URLSearchParams = new URLSearchParams({
+            userId: userId.toString(),
+        });
+        // REQUEST OPTIONS
+        const requestOptions = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        };
+        console.log('sdsdsds');
+
+        // FETCH REQUEST
+        const response = await fetch(
+            `${NOTES_ENDPOINT}/${noteId}?${searchParams.toString()}`,
+            requestOptions,
+        );
+        console.log('sdsdsds');
+        return response.json();
+    },
+);
 
 export const fetchNoteById = createAsyncThunk<
     ISingleNote,
@@ -82,9 +105,8 @@ export const fetchNoteById = createAsyncThunk<
         const queryParams: URLSearchParams = new URLSearchParams({
             userId: userId.toString(),
         });
-        const res = await fetch(
+        return await fetch(
             `${NOTES_ENDPOINT}/${noteId}?${queryParams.toString()}`,
         ).then((res) => res.json());
-        return res;
     },
 );
