@@ -45,42 +45,38 @@ const SavedNotes: React.FC<SavedNotesProps> = ({
                 {/* existing whiteboards */}
                 <div>
                     {notes &&
-                        notes
-                            .slice(0, 2)
-                            .map((n) => ({
-                                ...n,
-                                title:
-                                    n.title.length > 20
-                                        ? n.title.substring(0, 20) + '...'
-                                        : n.title,
-                            }))
-                            .map((n, i) => (
+                        notes.slice(0, 2).map((n, i) => (
+                            <div
+                                key={n.id ? n.id : i}
+                                onClick={() => {
+                                    navigate('notes');
+                                    updateCurrentNote(n);
+                                }}
+                                className={`group flex w-full cursor-pointer items-center justify-between gap-4 rounded-lg px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
+                            >
+                                <span className={`text-sm`}>
+                                    {n.title.length > 15
+                                        ? n.title.substring(0, 15) + '...'
+                                        : n.title}
+                                </span>
                                 <Button
-                                    key={i}
-                                    onClick={() => {
-                                        navigate('notes');
+                                    onClick={(e) => {
+                                        e.stopPropagation();
                                         updateCurrentNote(n);
+                                        navigate('update-notes/' + n.id!);
                                     }}
-                                    className={`group flex w-full cursor-pointer items-center justify-between gap-4 rounded-lg px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
+                                    className={`pointer-events-none invisible p-1 transition-all duration-200 hover:bg-primary-700 group-hover:pointer-events-auto group-hover:visible`}
                                 >
-                                    <span className={`text-sm`}>{n.title}</span>
-                                    <Button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            updateCurrentNote(n);
-                                            navigate('update-notes/' + n.id!);
-                                        }}
-                                        className={`pointer-events-none invisible p-1 transition-all duration-200 hover:bg-primary-700 group-hover:pointer-events-auto group-hover:visible`}
-                                    >
-                                        {<EditBtnSvg />}
-                                    </Button>
+                                    {<EditBtnSvg />}
                                 </Button>
-                            ))}
-                    <div
-                        className={`cursor-pointer rounded-lg px-2 py-2 text-center font-mono text-xs font-bold underline-offset-4 hover:bg-primary hover:underline`}
+                            </div>
+                        ))}
+                    <Link
+                        to={`view-all-notes`}
+                        className={`my-1 flex w-full cursor-pointer rounded-lg px-2 py-2 font-mono text-xs font-bold underline-offset-4 hover:bg-primary hover:underline`}
                     >
-                        View All
-                    </div>
+                        <p className={`w-full text-center`}>View All</p>
+                    </Link>
                 </div>
             </div>
         </>

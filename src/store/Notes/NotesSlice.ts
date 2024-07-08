@@ -23,7 +23,7 @@ export const notesSlice = createSlice({
     initialState,
     reducers: {
         createNote: (state, action: PayloadAction<ISingleNote>) => {
-            state.notes.push(action.payload);
+            state.notes.unshift(action.payload);
             state.currentNote = action.payload;
         },
         updateCurrentNote: (state, action: PayloadAction<ISingleNote>) => {
@@ -70,12 +70,18 @@ export const notesSlice = createSlice({
             .addCase(
                 createCaseAsync.fulfilled,
                 (state, { payload }: PayloadAction<IAddNoteResponseDto>) => {
-                    if (!payload.ok) {
-                        /* empty -> // need to set error here */
+                    if (payload.ok && payload.statusCode === 200) {
+                        state.notes.unshift(payload.note);
+                        state.currentNote = payload.note;
+                    } else if (!payload.ok && payload.statusCode === 404) {
+                        alert(payload.message);
                     }
-                    console.log(state.notes);
                 },
             )
+            .addCase(createCaseAsync.rejected, (state, action) => {
+                console.log(action.payload);
+                alert(action.payload);
+            })
             .addCase(
                 fetchNoteById.fulfilled,
                 (state, { payload }: PayloadAction<ISingleNote>) => {

@@ -4,6 +4,7 @@ import MasterLayout from './shared/layout/MasterLayout';
 import Notes from './components/Notes/Notes.tsx';
 import CreateNotesContainer from './containers/CreateNotesContainer.tsx';
 import UpdateNoteContainer from './containers/updateNoteContainer.tsx';
+import ViewAllNotes from './components/Notes/ViewAllNotes.tsx';
 
 function App() {
     return (
@@ -21,6 +22,10 @@ function App() {
                         <Route
                             path={`update-notes/:id`}
                             element={<UpdateNoteContainer />}
+                        />
+                        <Route
+                            path={`view-all-notes`}
+                            element={<ViewAllNotes />}
                         />
                     </Route>
                 </Routes>

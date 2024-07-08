@@ -38,6 +38,10 @@ export const createCaseAsync = createAsyncThunk<
 >(
     CREATE_NOTES_ACTION,
     async (requestBody: IAddNoteRequestDto, { dispatch }) => {
+        // OPTIMISTICALLY UPDATING THE STATES
+        dispatch(createNote(requestBody));
+
+        // REQUEST OPTIONS
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -45,13 +49,11 @@ export const createCaseAsync = createAsyncThunk<
             },
             body: JSON.stringify(requestBody),
         };
-        const response = await fetch(NOTES_ENDPOINT, requestOptions).then(
-            (res) => res.json(),
-        );
-        if (response.ok && response.statusCode === 200)
-            dispatch(createNote(response.note));
 
-        return response;
+        // HITTING API ENDPOINT
+        return await fetch(NOTES_ENDPOINT, requestOptions).then((res) =>
+            res.json(),
+        );
     },
 );
 
@@ -83,14 +85,12 @@ export const updateNoteAsync = createAsyncThunk<
             },
             body: JSON.stringify(body),
         };
-        console.log('sdsdsds');
 
         // FETCH REQUEST
         const response = await fetch(
             `${NOTES_ENDPOINT}/${noteId}?${searchParams.toString()}`,
             requestOptions,
         );
-        console.log('sdsdsds');
         return response.json();
     },
 );
@@ -105,8 +105,9 @@ export const fetchNoteById = createAsyncThunk<
         const queryParams: URLSearchParams = new URLSearchParams({
             userId: userId.toString(),
         });
-        return await fetch(
+        const response = await fetch(
             `${NOTES_ENDPOINT}/${noteId}?${queryParams.toString()}`,
-        ).then((res) => res.json());
+        );
+        return await response.json();
     },
 );
