@@ -37,3 +37,16 @@ export interface IUpdateNoteResponse {
     note: ISingleNote;
     notes: ISingleNote[];
 }
+
+export interface IDeleteNoteResponseDto {
+    ok: boolean;
+    statusCode: number;
+    message: string;
+    error: string[];
+    notes: ISingleNote[];
+}
+
+export interface IDeleteNoteRequestDto {
+    noteId: number;
+    userId: number;
+}

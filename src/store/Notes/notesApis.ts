@@ -2,13 +2,15 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
     IAddNoteRequestDto,
     IAddNoteResponseDto,
+    IDeleteNoteRequestDto,
+    IDeleteNoteResponseDto,
     INotesState,
     ISingleNote,
     IUpdateNoteRequest,
     IUpdateNoteResponse,
 } from './types.ts';
 import { NOTES_ENDPOINT } from '../../environment/environment.ts';
-import { createNote, updateNoteAndNotes } from './NotesSlice.ts';
+import { createNote, deleteNote, updateNoteAndNotes } from './NotesSlice.ts';
 import { AppDispatch } from '../store.ts';
 
 // ACTIONS
@@ -16,6 +18,7 @@ export const GET_NOTES_BY_USER_ID = 'notes/fetchNotesByUserId';
 export const CREATE_NOTES_ACTION = 'notes/postNote';
 export const UPDATE_NOTES_ACTION = 'notes/updateNote';
 export const GET_NOTE_BY_ID = 'notes/getNoteById';
+export const DELETE_NOTE_BY_ID = 'notes/deleteNoteById';
 
 // THUNKS
 export const fetchNotesByUserId = createAsyncThunk<
@@ -38,7 +41,7 @@ export const createCaseAsync = createAsyncThunk<
 >(
     CREATE_NOTES_ACTION,
     async (requestBody: IAddNoteRequestDto, { dispatch }) => {
-        // OPTIMISTICALLY UPDATING THE STATES
+        // OPTIMISTIC UPDATE
         dispatch(createNote(requestBody));
 
         // REQUEST OPTIONS
@@ -50,10 +53,8 @@ export const createCaseAsync = createAsyncThunk<
             body: JSON.stringify(requestBody),
         };
 
-        // HITTING API ENDPOINT
-        return await fetch(NOTES_ENDPOINT, requestOptions).then((res) =>
-            res.json(),
-        );
+        const response = await fetch(NOTES_ENDPOINT, requestOptions);
+        return response.json();
     },
 );
 
@@ -111,3 +112,24 @@ export const fetchNoteById = createAsyncThunk<
         return await response.json();
     },
 );
+
+export const deleteNoteById = createAsyncThunk<
+    IDeleteNoteResponseDto,
+    IDeleteNoteRequestDto,
+    { state: INotesState }
+>(DELETE_NOTE_BY_ID, async ({ noteId, userId }, { dispatch }) => {
+    // OPTIMISTIC UPDATE
+    dispatch(deleteNote({ noteId, userId }));
+
+    const requestOptions = {
+        method: 'DELETE',
+    };
+    const searchParams = new URLSearchParams({
+        userId: userId.toString(),
+    });
+    const response = await fetch(
+        `${NOTES_ENDPOINT}/${noteId}?` + searchParams.toString(),
+        requestOptions,
+    );
+    return await response.json();
+});

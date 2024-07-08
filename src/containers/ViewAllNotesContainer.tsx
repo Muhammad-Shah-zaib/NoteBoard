@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ViewAllNotes from '../components/Notes/ViewAllNotes.tsx';
 import { bindActionCreators } from '@reduxjs/toolkit';
 import { updateCurrentNote } from '../store/Notes/NotesSlice.ts';
+import { deleteNoteById } from '../store/Notes/notesApis.ts';
 
 const mapStateToProps = (state: RootState) => ({
     notes: state.notesSlice.notes,
@@ -11,6 +12,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => {
     return bindActionCreators(
         {
             updateCurrentNote,
+            deleteNoteById,
         },
         dispatch,
     );

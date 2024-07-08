@@ -48,7 +48,7 @@ const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
         const obj: ISingleNote = {
             title,
             content,
-            userId: 0,
+            userId: 1,
         };
         createCaseAsync(obj);
     };

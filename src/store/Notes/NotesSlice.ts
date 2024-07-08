@@ -1,4 +1,10 @@
-import { IAddNoteResponseDto, INotesState, ISingleNote } from './types.ts';
+import {
+    IAddNoteResponseDto,
+    IDeleteNoteRequestDto,
+    IDeleteNoteResponseDto,
+    INotesState,
+    ISingleNote,
+} from './types.ts';
 import {
     createDraftSafeSelector,
     createSlice,
@@ -7,6 +13,7 @@ import {
 import { RootState } from '../store.ts';
 import {
     createCaseAsync,
+    deleteNoteById,
     fetchNoteById,
     fetchNotesByUserId,
     updateNoteAsync,
@@ -28,6 +35,13 @@ export const notesSlice = createSlice({
         },
         updateCurrentNote: (state, action: PayloadAction<ISingleNote>) => {
             state.currentNote = action.payload;
+        },
+        deleteNote: (
+            state,
+            { payload: { noteId } }: PayloadAction<IDeleteNoteRequestDto>,
+        ) => {
+            // WE NEED TO DELETE THE note
+            state.notes = state.notes.filter((n) => n.id !== noteId);
         },
         updateNoteAndNotes: (
             state,
@@ -84,10 +98,23 @@ export const notesSlice = createSlice({
                     state.currentNote = payload;
                     console.log(payload);
                 },
+            )
+            .addCase(
+                deleteNoteById.fulfilled,
+                (
+                    state,
+                    {
+                        payload: { notes, ok, statusCode },
+                    }: PayloadAction<IDeleteNoteResponseDto>,
+                ) => {
+                    if (ok && statusCode === 200) {
+                        state.notes = notes;
+                    }
+                },
             );
     },
 });
-export const { createNote, updateCurrentNote, updateNoteAndNotes } =
+export const { createNote, updateCurrentNote, updateNoteAndNotes, deleteNote } =
     notesSlice.actions;
 export default notesSlice.reducer;
 

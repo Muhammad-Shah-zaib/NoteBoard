@@ -1,19 +1,28 @@
-import { ISingleNote } from '../../store/Notes/types.ts';
+import { IDeleteNoteRequestDto, ISingleNote } from '../../store/Notes/types.ts';
 import CloseBtnSvg from '../../assets/button-svgs/CloseBtnSvg.tsx';
 import Button from '../../shared/button/Button.tsx';
 import { useNavigate } from 'react-router-dom';
 import { updateCurrentNote } from '../../store/Notes/NotesSlice.ts';
 import WriteIcon from '../../assets/button-svgs/WriteIcon.tsx';
+import { deleteNoteById } from '../../store/Notes/notesApis.ts';
 
 export interface IViewAllNotesProps {
     notes: ISingleNote[];
     updateCurrentNote: typeof updateCurrentNote;
+    deleteNoteById: typeof deleteNoteById;
 }
-const ViewAllNotes = ({ notes, updateCurrentNote }: IViewAllNotesProps) => {
+const ViewAllNotes = ({
+    notes,
+    updateCurrentNote,
+    deleteNoteById,
+}: IViewAllNotesProps) => {
     const navigate = useNavigate();
-    const handleClick = (note: ISingleNote) => {
+    const handleCurrentNote = (note: ISingleNote) => {
         updateCurrentNote(note);
         navigate(`/notes`);
+    };
+    const handleDelete = (request: IDeleteNoteRequestDto) => {
+        deleteNoteById(request);
     };
     return (
         <div
@@ -21,9 +30,9 @@ const ViewAllNotes = ({ notes, updateCurrentNote }: IViewAllNotesProps) => {
         >
             {notes.map((n, i) => (
                 <div
-                    onClick={() => handleClick(n)}
+                    onClick={() => handleCurrentNote(n)}
                     key={n.id ? n.id : i}
-                    className={`items-between flex h-full cursor-pointer flex-col justify-center gap-4 rounded-lg px-4 py-2 shadow-md shadow-secondary`}
+                    className={`items-between flex h-full cursor-pointer flex-col justify-center gap-4 px-4 py-2 shadow-md shadow-secondary hover:bg-primary-700 hover:shadow-lg`}
                 >
                     <div
                         className={`flex w-full items-center justify-between gap-4`}
@@ -35,6 +44,18 @@ const ViewAllNotes = ({ notes, updateCurrentNote }: IViewAllNotesProps) => {
                         </p>
                         <div className={`flex gap-2`}>
                             <Button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    if (confirm()) {
+                                        if (n.id) {
+                                            handleDelete({
+                                                noteId: n.id!,
+                                                userId: n.userId,
+                                            });
+                                        }
+                                    }
+                                }}
                                 className={`rounded-full transition-all duration-200 hover:bg-primary-700`}
                             >
                                 <CloseBtnSvg />
