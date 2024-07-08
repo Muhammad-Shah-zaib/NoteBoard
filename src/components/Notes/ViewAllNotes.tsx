@@ -3,6 +3,7 @@ import CloseBtnSvg from '../../assets/button-svgs/CloseBtnSvg.tsx';
 import Button from '../../shared/button/Button.tsx';
 import { useNavigate } from 'react-router-dom';
 import { updateCurrentNote } from '../../store/Notes/NotesSlice.ts';
+import WriteIcon from '../../assets/button-svgs/WriteIcon.tsx';
 
 export interface IViewAllNotesProps {
     notes: ISingleNote[];
@@ -32,11 +33,23 @@ const ViewAllNotes = ({ notes, updateCurrentNote }: IViewAllNotesProps) => {
                         >
                             {n.title}
                         </p>
-                        <Button
-                            className={`rounded-full transition-all duration-200 hover:bg-primary-700`}
-                        >
-                            <CloseBtnSvg />
-                        </Button>
+                        <div className={`flex gap-2`}>
+                            <Button
+                                className={`rounded-full transition-all duration-200 hover:bg-primary-700`}
+                            >
+                                <CloseBtnSvg />
+                            </Button>
+                            <Button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    navigate('/update-notes/' + n.id);
+                                }}
+                                className={`transition-all duration-200 hover:bg-primary-700`}
+                            >
+                                <WriteIcon />
+                            </Button>
+                        </div>
                     </div>
                     <div className={`w-full`}>
                         <p className={`w-full text-end text-xs opacity-40`}>

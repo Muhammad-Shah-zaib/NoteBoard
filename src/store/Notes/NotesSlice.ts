@@ -78,10 +78,6 @@ export const notesSlice = createSlice({
                     }
                 },
             )
-            .addCase(createCaseAsync.rejected, (state, action) => {
-                console.log(action.payload);
-                alert(action.payload);
-            })
             .addCase(
                 fetchNoteById.fulfilled,
                 (state, { payload }: PayloadAction<ISingleNote>) => {
