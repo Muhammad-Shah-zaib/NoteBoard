@@ -3,7 +3,7 @@ import './MasterLayout.css';
 import { useRef } from 'react';
 import Button from '../button/Button.tsx';
 import DoubleArrowSvg from '../../assets/button-svgs/DoubleArrowSvg.tsx';
-import {Outlet} from "react-router-dom";
+import { Outlet } from 'react-router-dom';
 
 function MasterLayout() {
     const sideBarCtnRef = useRef<HTMLDivElement>(null);
@@ -12,7 +12,8 @@ function MasterLayout() {
 
     const handleSideBarCLick = () => {
         (sideBarCtnRef.current as HTMLDivElement).classList.remove('max-w-0');
-        (contentCtnRef.current as HTMLDivElement).classList.remove('w-full');
+        (sideBarCtnRef.current as HTMLDivElement).classList.remove('hidden');
+        (contentCtnRef.current as HTMLDivElement).classList.remove('md:w-full');
         (openBtnCtnRef.current as HTMLDivElement).classList.remove(
             'opacity-100',
         );
@@ -23,7 +24,10 @@ function MasterLayout() {
     return (
         <div className="layout-ctn">
             {/* sideBar */}
-            <div className="sidebar-ctn overflow-hidden" ref={sideBarCtnRef}>
+            <div
+                className="sidebar-ctn overflow-hidden md:block"
+                ref={sideBarCtnRef}
+            >
                 <SideBar
                     contentCtnRef={contentCtnRef}
                     sideBarCtnRef={sideBarCtnRef}
@@ -33,7 +37,7 @@ function MasterLayout() {
             {/* Content */}
             <div
                 ref={contentCtnRef}
-                className="relative h-[100vh] w-[80%] overflow-auto bg-primary transition-all duration-200"
+                className="relative h-[100vh] w-full overflow-auto bg-primary transition-all duration-200 md:w-[80%]"
             >
                 {/* Following this the button to open the closed sideBar */}
                 <span

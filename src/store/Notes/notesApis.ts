@@ -44,7 +44,7 @@ export const createCaseAsync = createAsyncThunk<
         // OPTIMISTIC UPDATE
         dispatch(createNote(requestBody));
 
-        // REQUEST OPTIONS
+        // REQUEST OPTIONSq
         const requestOptions = {
             method: 'POST',
             headers: {

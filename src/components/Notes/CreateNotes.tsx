@@ -15,8 +15,12 @@ export interface CreateNotesProps {
 }
 
 const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
+    // Markdown Editor HEIGHT
+    const mdEditorHeight: string = window.innerHeight > 768 ? '95vh' : '35vh';
+
     // store Hooks
     const navigate = useNavigate();
+
     // Hooks
     const dialogueId = useId();
     const titleInputRef = useRef<HTMLInputElement>(null);
@@ -71,7 +75,7 @@ const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
                 <MarkdownEditor
                     value={content}
                     enablePreview={false}
-                    height={`95vh`}
+                    height={mdEditorHeight}
                     onChange={handleUpdateContent}
                 />
                 <div className={`flex flex-col`}>
@@ -105,7 +109,7 @@ const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
                     </div>
                     <MarkdownEditor.Markdown
                         source={content}
-                        className={`mb-4 h-[95vh] overflow-auto bg-primary px-6 py-2 shadow-lg shadow-secondary`}
+                        className={`mb-4 h-[60vh] overflow-auto bg-primary px-6 py-2 shadow-lg shadow-secondary md:h-[95vh]`}
                     />
                 </div>
             </div>

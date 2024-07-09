@@ -32,10 +32,12 @@ function SideBar({ sideBarCtnRef, contentCtnRef, openBtnCtnRef }: Props) {
                                 (
                                     sideBarCtnRef.current as HTMLDivElement
                                 ).classList.add('max-w-0');
-                                console.log(sideBarCtnRef.current);
+                                (
+                                    sideBarCtnRef.current as HTMLDivElement
+                                ).classList.add('hidden');
                                 (
                                     contentCtnRef.current as HTMLDivElement
-                                ).classList.add('w-full');
+                                ).classList.add('md:w-full');
                                 (
                                     openBtnCtnRef.current as HTMLDivElement
                                 ).classList.add('opacity-100');

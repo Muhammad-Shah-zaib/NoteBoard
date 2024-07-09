@@ -18,6 +18,9 @@ const UpdateNote: React.FC<IUpdateNoteProps> = ({
     updateNoteAsync,
     currentNote,
 }) => {
+    // Markdown editor Height
+    const mdEditorHeight: string = window.innerWidth > 768 ? '95vh' : '35vh';
+
     // router Hooks
     const navigate = useNavigate();
 
@@ -71,12 +74,12 @@ const UpdateNote: React.FC<IUpdateNoteProps> = ({
                 <MarkdownEditor
                     value={content}
                     enablePreview={false}
-                    height={`95vh`}
+                    height={mdEditorHeight}
                     onChange={handleUpdateContent}
                 />
                 <div className={`flex flex-col`}>
                     <div
-                        className={`flex justify-between border-b-2 border-primary-700 px-4 py-1`}
+                        className={`flex w-screen justify-between border-b-2 border-primary-700 px-4 py-1 md:w-auto`}
                     >
                         <div className={`flex items-center space-x-4`}>
                             {/* Back button */}
@@ -106,7 +109,7 @@ const UpdateNote: React.FC<IUpdateNoteProps> = ({
                     {/* Markdown preview */}
                     <MarkdownEditor.Markdown
                         source={content}
-                        className={`mb-4 h-[95vh] overflow-auto bg-primary px-6 py-2 shadow-lg shadow-secondary`}
+                        className={`mb-4 h-[60vh] overflow-auto bg-primary px-6 py-2 shadow-lg shadow-secondary md:h-[95vh]`}
                     />
                 </div>
             </div>

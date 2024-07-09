@@ -3,7 +3,7 @@
 }
 
 .sidebar-ctn {
-    @apply h-screen w-[20%] max-w-[500px] transition-all duration-200;
+    @apply h-screen md:w-[20%] md:max-w-[500px] max-w-[200px] transition-all duration-200;
 }
 
 .open-btn {

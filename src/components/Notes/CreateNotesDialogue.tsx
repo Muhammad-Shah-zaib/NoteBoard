@@ -48,7 +48,11 @@ const CreateNotesDialogue = ({
             <div
                 className={`flex items-center justify-between border-b-2 border-primary pb-2`}
             >
-                <h1 className={`font-mono text-xl font-bold`}>Saving notes</h1>
+                <h1
+                    className={`font-mono text-base font-bold md:text-lg lg:text-xl`}
+                >
+                    Saving notes
+                </h1>
                 <Button
                     id={`dialogue-close-btn`}
                     className={`rounded-full transition-all duration-200 hover:bg-red-500`}
@@ -61,13 +65,15 @@ const CreateNotesDialogue = ({
             <form
                 className={`flex h-full w-full flex-col gap-4 font-mono font-bold`}
             >
-                <div className={`grid grid-cols-4 items-center`}>
+                <div
+                    className={`grid grid-cols-4 items-center text-sm md:text-base lg:text-lg`}
+                >
                     <label
                         htmlFor={`title-input`}
-                        className={`cursor-pointer text-lg`}
+                        className={`md: cursor-pointer text-sm md:text-base lg:text-lg`}
                     >
                         Title:
-                        <span className={`text-red-500`}>*</span>:
+                        <span className={`text-red-500`}>*</span>
                     </label>
                     <input
                         ref={titleInputRef}
@@ -81,7 +87,7 @@ const CreateNotesDialogue = ({
                     {/* error field*/}
                     {error && (
                         <p className={`col-span-4 mt-4 text-sm text-red-700`}>
-                            Title is required field
+                            - Title is required field
                         </p>
                     )}
                 </div>

@@ -3,5 +3,5 @@
 }
 
 .create-notes-ctn {
-    @apply grid grid-cols-2 gap-4 h-[100vh] overflow-hidden pb-4;
+    @apply grid md:grid-cols-2 gap-4 h-[100vh] overflow-auto pb-4;
 }
