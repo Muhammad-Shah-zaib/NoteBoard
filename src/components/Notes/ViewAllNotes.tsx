@@ -27,7 +27,7 @@ const ViewAllNotes = ({
     return (
         <div className="flex h-screen w-screen items-center justify-center md:h-full md:w-full">
             <div
-                className={`xs:grid-cols-2 grid w-full max-w-[1024px] justify-center gap-8 overflow-auto px-8 py-4 md:grid-cols-4`}
+                className={`grid w-full max-w-[1024px] justify-center gap-8 overflow-auto px-8 py-4 xs:grid-cols-2 md:grid-cols-4`}
             >
                 {notes.map((n, i) => (
                     <div
@@ -65,6 +65,7 @@ const ViewAllNotes = ({
                                     onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
+                                        updateCurrentNote(n);
                                         navigate('/update-notes/' + n.id);
                                     }}
                                     className={`px-0.5 transition-all duration-200 hover:bg-zinc-500`}
