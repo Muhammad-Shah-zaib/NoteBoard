@@ -25,7 +25,7 @@ const ViewAllNotes = ({
         deleteNoteById(request);
     };
     return (
-        <div className="flex h-screen w-screen items-center justify-center">
+        <div className="flex h-screen w-screen items-center justify-center md:h-full md:w-full">
             <div
                 className={`xs:grid-cols-2 grid w-full max-w-[1024px] justify-center gap-8 overflow-auto px-8 py-4 md:grid-cols-4`}
             >
