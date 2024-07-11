@@ -5,6 +5,7 @@ import Notes from './components/Notes/Notes.tsx';
 import CreateNotesContainer from './containers/CreateNotesContainer.tsx';
 import UpdateNoteContainer from './containers/updateNoteContainer.tsx';
 import ViewAllNotesContainer from './containers/ViewAllNotesContainer.tsx';
+import CreateWhitebaord from './components/Whiteboard/Whiteboard.tsx';
 
 function App() {
     return (
@@ -26,6 +27,10 @@ function App() {
                         <Route
                             path={`view-all-notes`}
                             element={<ViewAllNotesContainer />}
+                        />
+                        <Route
+                            path={`/create-whiteboard`}
+                            element={<CreateWhitebaord />}
                         />
                     </Route>
                 </Routes>
