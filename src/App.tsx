@@ -6,6 +6,7 @@ import CreateNotesContainer from './containers/CreateNotesContainer.tsx';
 import UpdateNoteContainer from './containers/updateNoteContainer.tsx';
 import ViewAllNotesContainer from './containers/ViewAllNotesContainer.tsx';
 import CreateWhiteboardContainer from './containers/CreateWhiteboardContainer.tsx';
+import ViewWhitebaordContainer from './containers/ViewWhitebaordContainer.tsx';
 
 function App() {
     return (
@@ -31,6 +32,10 @@ function App() {
                         <Route
                             path={`/create-whiteboard`}
                             element={<CreateWhiteboardContainer />}
+                        />
+                        <Route
+                            path={`/whiteboard/:id`}
+                            element={<ViewWhitebaordContainer />}
                         />
                     </Route>
                 </Routes>

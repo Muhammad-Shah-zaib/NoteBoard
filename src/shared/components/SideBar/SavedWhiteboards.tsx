@@ -1,6 +1,6 @@
 import './SideBar.css';
 import WriteIcon from '../../../assets/button-svgs/WriteIcon.tsx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ISingleWhiteboard } from '../../../store/whiteboard/types.ts';
 import { useEffect } from 'react';
 import { fetchWhiteboardWithUserIdAsync } from '../../../store/whiteboard/whiteboardApis.ts';
@@ -17,6 +17,8 @@ const SavedWhiteboards = ({
     fetchWhiteboardsByUserIdAsync,
     setCurrentWhiteboard,
 }: ISavedWhiteboardsProps) => {
+    // ROUTE HOOKS
+    const navigate = useNavigate();
     // USE EFFECT
     useEffect(() => {
         fetchWhiteboardsByUserIdAsync({ userId: 1 });
@@ -50,6 +52,7 @@ const SavedWhiteboards = ({
                         .map((w, i) => (
                             <div
                                 onClick={() => {
+                                    navigate(`whiteboard/${w.id}`);
                                     setCurrentWhiteboard(w);
                                 }}
                                 key={i}
