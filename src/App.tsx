@@ -5,7 +5,7 @@ import Notes from './components/Notes/Notes.tsx';
 import CreateNotesContainer from './containers/CreateNotesContainer.tsx';
 import UpdateNoteContainer from './containers/updateNoteContainer.tsx';
 import ViewAllNotesContainer from './containers/ViewAllNotesContainer.tsx';
-import CreateWhitebaord from './components/Whiteboard/Whiteboard.tsx';
+import CreateWhitebaord from './components/Whiteboard/CreateWhiteboard.tsx';
 
 function App() {
     return (

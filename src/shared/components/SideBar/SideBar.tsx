@@ -2,7 +2,7 @@ import './SideBar.css';
 import notion from '../../../assets/notion.svg';
 import Button from '../../button/Button';
 import DoubleArrowSvg from '../../../assets/button-svgs/DoubleArrowSvg.tsx';
-import Whiteboard from './Whiteboard.tsx';
+import SavedWhiteboards from './SavedWhiteboards.tsx';
 import Profile from './Profile.tsx';
 import SearchBtnSvg from '../../../assets/button-svgs/SearchBtnSvg.tsx';
 import HomeBtnSvg from '../../../assets/button-svgs/HomeBtnSvg.tsx';
@@ -76,8 +76,8 @@ function SideBar({ sideBarCtnRef, contentCtnRef, openBtnCtnRef }: Props) {
                 </header>
                 {/* main */}
                 <main className={`main-ctn`}>
-                    {/* Whiteboard and Whiteboard */}
-                    <Whiteboard />
+                    {/* SavedWhiteboards and SavedWhiteboards */}
+                    <SavedWhiteboards />
                     <SavedNotesContainer />
                 </main>
             </div>

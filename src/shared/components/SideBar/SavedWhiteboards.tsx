@@ -1,7 +1,9 @@
 import './SideBar.css';
+import WriteIcon from '../../../assets/button-svgs/WriteIcon.tsx';
+import { Link } from 'react-router-dom';
 
-const Whiteboard = () => {
-    const whitebaords = [
+const SavedWhiteboards = () => {
+    const whiteboards = [
         { title: 'Mathematics Integration' },
         { title: 'LeetCode 1438' },
         { title: 'Partial Fractions' },
@@ -14,12 +16,20 @@ const Whiteboard = () => {
     return (
         <>
             <div className={`whiteboard-ctn`}>
-                <h3 className={`px-2 pt-2 font-mono text-lg font-bold`}>
-                    Whiteboard
-                </h3>
+                <div className={`group flex items-center justify-between`}>
+                    <h3 className={`px-2 pt-2 font-mono text-lg font-bold`}>
+                        Whiteboard
+                    </h3>
+                    <Link
+                        to={`/create-whiteboard`}
+                        className={`hidden p-1 transition-all duration-200 hover:bg-primary group-hover:inline`}
+                    >
+                        <WriteIcon />
+                    </Link>
+                </div>
                 {/* existing whiteboards */}
                 <div>
-                    {whitebaords
+                    {whiteboards
                         .filter((w, i) => {
                             if (i < 3) {
                                 if (w.title.length > 20) {
@@ -43,4 +53,4 @@ const Whiteboard = () => {
     );
 };
 
-export default Whiteboard;
+export default SavedWhiteboards;
