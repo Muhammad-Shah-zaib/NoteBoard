@@ -1,0 +1,6 @@
+.pencil-cursor {
+    width: 5px;
+    height: 5px;
+    backdrop-color: #131313;
+    cursor: url("../../assets/whitboard/pencil-cursor.svg"), auto;
+}

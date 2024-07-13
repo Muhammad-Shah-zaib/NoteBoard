@@ -4,26 +4,26 @@ import downArrowSvg from '../../assets/whitboard/down-arrow.svg';
 import trashSvg from '../../assets/whitboard/trash.svg';
 import shareSvg from '../../assets/whitboard/share.svg';
 import textSvg from '../../assets/whitboard/text.svg';
+import './whitboard.css';
 
 const CreateWhiteboard = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [currentColor, setCurrentColor] = useState<string>('black'); // State to hold the current drawing color
+    const [currentColor] = useState<string>('black'); // State to hold the current drawing color
     useLayoutEffect(() => {
         const canvas = canvasRef.current;
         if (canvas) {
             const ctx = canvas.getContext('2d');
             if (ctx) {
-                console.log('Canvas context initialized:', ctx);
-
-                // Set initial stroke style
-                ctx.strokeStyle = currentColor;
-
                 // Function to get canvas coordinates from client coordinates
                 const getCanvasCoordinates = (event: MouseEvent) => {
                     const canvasRect = canvas.getBoundingClientRect();
                     // Calculate the X and Y coordinates relative to the canvas
-                    let x = event.clientX - canvasRect.left;
-                    let y = event.clientY - canvasRect.top;
+                    let x =
+                        Math.round(event.clientX) - Math.round(canvasRect.left);
+                    let y =
+                        Math.round(event.clientY) +
+                        20 -
+                        Math.round(canvasRect.top);
 
                     // Handle potential scaling issues (optional)
                     const scaleX = canvas.width / canvas.clientWidth;
@@ -36,6 +36,7 @@ const CreateWhiteboard = () => {
                 };
 
                 canvas.addEventListener('mousedown', (event) => {
+                    ctx.lineWidth = 2;
                     const { x, y } = getCanvasCoordinates(event);
                     console.log('MOUSE DOWN at:', x, y);
                     ctx.beginPath();
@@ -63,6 +64,15 @@ const CreateWhiteboard = () => {
         }
     }, [currentColor]); // Include currentColor in dependencies to update stroke style when color changes
 
+    const handleDownload = () => {
+        const canvas = canvasRef.current;
+        alert('downloading');
+        if (canvas) {
+            const dataUrl = canvas.toDataURL('image/png');
+            console.log(dataUrl);
+        }
+    };
+
     return (
         <div className={`h-screen w-full p-2`}>
             <div
@@ -71,10 +81,9 @@ const CreateWhiteboard = () => {
                 {/* Canvas */}
                 <canvas
                     ref={canvasRef}
-                    width={800}
-                    height={600}
-                    className={`h-[200vh] w-[200vw]`}
-                    style={{ border: '1px solid black' }}
+                    width={1980}
+                    height={1240}
+                    className={`pencil-cursor h-[200vh] w-[200vw]`}
                 ></canvas>
 
                 {/* Menu bar at bottom center */}
@@ -103,9 +112,10 @@ const CreateWhiteboard = () => {
                         <img src={trashSvg} alt={`pencil`} />
                     </div>
                     <div
+                        onClick={handleDownload}
                         className={`flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-lg bg-zinc-300`}
                     >
-                        <img src={shareSvg} alt={`pencil`} />
+                        <img src={shareSvg} alt={`share`} />
                     </div>
                 </div>
             </div>
