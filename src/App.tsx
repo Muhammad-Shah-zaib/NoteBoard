@@ -34,7 +34,7 @@ function App() {
                             element={<CreateWhiteboardContainer />}
                         />
                         <Route
-                            path={`/whiteboard/:id`}
+                            path={`/whiteboard`}
                             element={<ViewWhitebaordContainer />}
                         />
                     </Route>

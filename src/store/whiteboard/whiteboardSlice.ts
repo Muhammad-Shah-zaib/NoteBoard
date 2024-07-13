@@ -36,7 +36,7 @@ const whiteboardSlice = createSlice({
                     { payload }: PayloadAction<IAddWhiteboardResponseDto>,
                 ) => {
                     if (payload.ok && payload.statusCode === 200) {
-                        state.whiteboards.push(payload.whiteboard);
+                        state.whiteboards = payload.whiteboards;
                         state.currentWhiteboard = payload.whiteboard;
                     }
                 },

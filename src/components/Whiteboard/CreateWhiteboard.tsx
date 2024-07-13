@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useId, useLayoutEffect, useRef, useState } from 'react';
 import pencilSvg from '../../assets/whitboard/pencil.svg';
 import downArrowSvg from '../../assets/whitboard/down-arrow.svg';
 import trashSvg from '../../assets/whitboard/trash.svg';
@@ -7,12 +7,18 @@ import textSvg from '../../assets/whitboard/text.svg';
 import './whitboard.css';
 import usePencil from '../../customHooks/usePencil.ts';
 import { addWhiteboardAsync } from '../../store/whiteboard/whiteboardApis.ts';
+import Dialogue from '../../shared/components/dialogue/Dialogue.tsx';
+import CreateWhiteboardDialogue from './CreateWhiteboardDialogue.tsx';
+import { showComponent } from '../../utils/visibility.ts';
 
 export interface createWhiteboardProps {
     addWhiteboardAsync: typeof addWhiteboardAsync;
     loading: boolean;
 }
 const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
+    const [title, setTitle] = useState<string>('');
+    const titleInputRef = useRef<HTMLInputElement>(null);
+    const whiteboardId = useId();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [currentColor] = useState<string>('black'); // State to hold the current drawing color
     const { startPencil, stopPencil, keepDrawing } = usePencil();
@@ -36,22 +42,35 @@ const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
         }
     }, [currentColor]); // Include currentColor in dependencies to update stroke style when color changes
 
-    const handleSave = () => {
+    const createWhiteboard = () => {
         const canvas = canvasRef.current;
         if (canvas) {
-            // getting the canvas url
-            const dataUrl = canvas.toDataURL('image/png');
-            // since we have the url we can send the reqeust as follows
-            addWhiteboardAsync({
-                title: 'Whiteboard',
-                imageUrl: dataUrl,
-                userId: 1,
-            });
+            const titleInput = titleInputRef.current;
+            if (titleInput && titleInput.value) {
+                // getting the canvas url
+                const dataUrl = canvas.toDataURL('image/png');
+
+                // DISPATCHING THE EVENT TO ADD THE WHITEBOARD
+                addWhiteboardAsync({
+                    title: titleInput.value,
+                    imageUrl: dataUrl,
+                    userId: 1,
+                });
+            }
         }
     };
 
     return (
         <div className={`relative h-screen w-full p-2`}>
+            <Dialogue id={whiteboardId}>
+                <CreateWhiteboardDialogue
+                    whiteboardId={whiteboardId}
+                    titleInputRef={titleInputRef}
+                    titleState={title}
+                    setTitleState={setTitle}
+                    createOrUpdateWhiteboard={createWhiteboard}
+                />
+            </Dialogue>
             <div className={`h-full w-full overflow-auto rounded-lg bg-white`}>
                 {/* Canvas */}
                 <canvas
@@ -87,7 +106,7 @@ const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
                         <img src={trashSvg} alt={`pencil`} />
                     </div>
                     <div
-                        onClick={handleSave}
+                        onClick={() => showComponent(whiteboardId)}
                         className={`flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-lg bg-zinc-300`}
                     >
                         <img src={shareSvg} alt={`share`} />

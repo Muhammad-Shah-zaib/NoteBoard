@@ -46,13 +46,13 @@ const SavedNotes: React.FC<SavedNotesProps> = ({
                 <div>
                     {notes &&
                         notes.slice(0, 2).map((n, i) => (
-                            <div
+                            <Link
+                                to={`/notes`}
                                 key={n.id ? n.id : i}
                                 onClick={() => {
-                                    navigate('notes');
                                     updateCurrentNote(n);
                                 }}
-                                className={`group flex w-full cursor-pointer items-center justify-between gap-4 rounded-lg px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
+                                className={`group flex w-full cursor-pointer items-center justify-between gap-4 rounded-lg px-2 py-0.5 transition-all duration-300 hover:bg-zinc-800`}
                             >
                                 <span className={`text-sm`}>
                                     {n.title.length > 15
@@ -69,7 +69,7 @@ const SavedNotes: React.FC<SavedNotesProps> = ({
                                 >
                                     {<EditBtnSvg />}
                                 </Button>
-                            </div>
+                            </Link>
                         ))}
                     <Link
                         to={`view-all-notes`}

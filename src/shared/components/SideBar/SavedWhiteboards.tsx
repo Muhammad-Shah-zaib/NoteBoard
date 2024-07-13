@@ -1,6 +1,6 @@
 import './SideBar.css';
 import WriteIcon from '../../../assets/button-svgs/WriteIcon.tsx';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ISingleWhiteboard } from '../../../store/whiteboard/types.ts';
 import { useEffect } from 'react';
 import { fetchWhiteboardWithUserIdAsync } from '../../../store/whiteboard/whiteboardApis.ts';
@@ -18,11 +18,10 @@ const SavedWhiteboards = ({
     setCurrentWhiteboard,
 }: ISavedWhiteboardsProps) => {
     // ROUTE HOOKS
-    const navigate = useNavigate();
     // USE EFFECT
     useEffect(() => {
         fetchWhiteboardsByUserIdAsync({ userId: 1 });
-    }, []);
+    }, [fetchWhiteboardsByUserIdAsync]);
     return (
         <>
             <div className={`whiteboard-ctn`}>
@@ -50,15 +49,17 @@ const SavedWhiteboards = ({
                             return false;
                         })
                         .map((w, i) => (
-                            <div
-                                onClick={() => {
-                                    navigate(`whiteboard/${w.id}`);
-                                    setCurrentWhiteboard(w);
-                                }}
-                                key={i}
-                                className={`cursor-pointer rounded-lg px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
-                            >
-                                <span className={`text-sm`}>{w.title}</span>
+                            <div>
+                                <Link
+                                    to={`/whiteboard`}
+                                    key={i}
+                                    onClick={() => {
+                                        setCurrentWhiteboard(w);
+                                    }}
+                                    className={`flex cursor-pointer rounded-lg px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
+                                >
+                                    <span className={`text-sm`}>{w.title}</span>
+                                </Link>
                             </div>
                         ))}
                 </div>
