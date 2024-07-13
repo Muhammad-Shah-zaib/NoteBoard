@@ -4,7 +4,10 @@ import {
     IWhiteboardState,
 } from './types.ts';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { addWhiteboardAsync } from './whiteboardApis.ts';
+import {
+    addWhiteboardAsync,
+    fetchWhiteboardWithUserIdAsync,
+} from './whiteboardApis.ts';
 
 const initialState: IWhiteboardState = {
     whiteboards: [],
@@ -25,15 +28,30 @@ const whiteboardSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(
-            addWhiteboardAsync.fulfilled,
-            (state, { payload }: PayloadAction<IAddWhiteboardResponseDto>) => {
-                if (payload.ok && payload.statusCode === 200) {
-                    state.whiteboards.push(payload.whiteboard);
-                    state.currentWhiteboard = payload.whiteboard;
-                }
-            },
-        );
+        builder
+            .addCase(
+                addWhiteboardAsync.fulfilled,
+                (
+                    state,
+                    { payload }: PayloadAction<IAddWhiteboardResponseDto>,
+                ) => {
+                    if (payload.ok && payload.statusCode === 200) {
+                        state.whiteboards.push(payload.whiteboard);
+                        state.currentWhiteboard = payload.whiteboard;
+                    }
+                },
+            )
+            .addCase(
+                fetchWhiteboardWithUserIdAsync.fulfilled,
+                (state, { payload }: PayloadAction<ISingleWhiteboard[]>) => {
+                    // UPDATING WHITEBAORDS
+                    state.whiteboards = payload;
+
+                    // UPDATING CURRENT WHITEBOARD
+                    if (!state.currentWhiteboard && payload.length > 0)
+                        state.currentWhiteboard = payload[0];
+                },
+            );
     },
 });
 

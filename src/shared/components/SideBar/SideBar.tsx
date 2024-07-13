@@ -2,7 +2,6 @@ import './SideBar.css';
 import notion from '../../../assets/notion.svg';
 import Button from '../../button/Button';
 import DoubleArrowSvg from '../../../assets/button-svgs/DoubleArrowSvg.tsx';
-import SavedWhiteboards from './SavedWhiteboards.tsx';
 import Profile from './Profile.tsx';
 import SearchBtnSvg from '../../../assets/button-svgs/SearchBtnSvg.tsx';
 import HomeBtnSvg from '../../../assets/button-svgs/HomeBtnSvg.tsx';
@@ -10,6 +9,7 @@ import SettingsBtnSvg from '../../../assets/button-svgs/SettingsBtnSvg.tsx';
 import Footer from './Footer.tsx';
 import React, { useRef } from 'react';
 import SavedNotesContainer from '../../../containers/SavedNotesContainer.tsx';
+import SavedWhiteboardsContainer from '../../../containers/SavedWhiteboardsContainer.tsx';
 
 interface Props {
     sideBarCtnRef: React.RefObject<HTMLDivElement>;
@@ -77,7 +77,7 @@ function SideBar({ sideBarCtnRef, contentCtnRef, openBtnCtnRef }: Props) {
                 {/* main */}
                 <main className={`main-ctn`}>
                     {/* SavedWhiteboards and SavedWhiteboards */}
-                    <SavedWhiteboards />
+                    <SavedWhiteboardsContainer />
                     <SavedNotesContainer />
                 </main>
             </div>

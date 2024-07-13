@@ -1,18 +1,26 @@
 import './SideBar.css';
 import WriteIcon from '../../../assets/button-svgs/WriteIcon.tsx';
 import { Link } from 'react-router-dom';
+import { ISingleWhiteboard } from '../../../store/whiteboard/types.ts';
+import { useEffect } from 'react';
+import { fetchWhiteboardWithUserIdAsync } from '../../../store/whiteboard/whiteboardApis.ts';
+import { setCurrentWhiteboard } from '../../../store/whiteboard/whiteboardSlice.ts';
 
-const SavedWhiteboards = () => {
-    const whiteboards = [
-        { title: 'Mathematics Integration' },
-        { title: 'LeetCode 1438' },
-        { title: 'Partial Fractions' },
-        { title: 'Partial Fractions' },
-        { title: 'Partial Fractions' },
-        { title: 'Partial Fractions' },
-        { title: 'Partial Fractions' },
-        { title: 'Partial Fractions' },
-    ];
+export interface ISavedWhiteboardsProps {
+    whiteboards: ISingleWhiteboard[];
+    fetchWhiteboardsByUserIdAsync: typeof fetchWhiteboardWithUserIdAsync;
+    setCurrentWhiteboard: typeof setCurrentWhiteboard;
+}
+
+const SavedWhiteboards = ({
+    whiteboards,
+    fetchWhiteboardsByUserIdAsync,
+    setCurrentWhiteboard,
+}: ISavedWhiteboardsProps) => {
+    // USE EFFECT
+    useEffect(() => {
+        fetchWhiteboardsByUserIdAsync({ userId: 1 });
+    }, []);
     return (
         <>
             <div className={`whiteboard-ctn`}>
@@ -41,6 +49,9 @@ const SavedWhiteboards = () => {
                         })
                         .map((w, i) => (
                             <div
+                                onClick={() => {
+                                    setCurrentWhiteboard(w);
+                                }}
                                 key={i}
                                 className={`cursor-pointer rounded-lg px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
                             >

@@ -4,11 +4,14 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
     IAddWhiteboardRequestDto,
     IAddWhiteboardResponseDto,
+    ISingleWhiteboard,
     IWhiteboardState,
 } from './types.ts';
 
 // ACTIONS
 const ADD_WHITEBOARD = 'whiteboard/addWhiteboard';
+const FETCH_WHITEBOARDS_WITH_USER_ID = 'whiteboard/fetchWhiteboardsWithUserId';
+
 export const addWhiteboardAsync = createAsyncThunk<
     IAddWhiteboardResponseDto,
     IAddWhiteboardRequestDto,
@@ -30,5 +33,24 @@ export const addWhiteboardAsync = createAsyncThunk<
         requestOptions,
     );
 
+    return await response.json();
+});
+
+// fetch whiteboards with user id
+export const fetchWhiteboardWithUserIdAsync = createAsyncThunk<
+    ISingleWhiteboard[],
+    { userId: number },
+    { state: IWhiteboardState }
+>(FETCH_WHITEBOARDS_WITH_USER_ID, async ({ userId }) => {
+    // SEARCH PARAMS
+    const searchParams: URLSearchParams = new URLSearchParams({
+        userId: userId.toString(),
+    });
+    // REQUEST
+    const response = await fetch(
+        `${WHITEBOARD_ENDPOINT}?${searchParams.toString()}`,
+    );
+
+    // RETURNING JSON OBJ
     return await response.json();
 });

@@ -7,10 +7,12 @@ import textSvg from '../../assets/whitboard/text.svg';
 import './whitboard.css';
 import usePencil from '../../customHooks/usePencil.ts';
 import { addWhiteboardAsync } from '../../store/whiteboard/whiteboardApis.ts';
-import { useAppDispatch } from '../../store/store.ts';
 
-const CreateWhiteboard = () => {
-    const dispatch = useAppDispatch();
+export interface createWhiteboardProps {
+    addWhiteboardAsync: typeof addWhiteboardAsync;
+    loading: boolean;
+}
+const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [currentColor] = useState<string>('black'); // State to hold the current drawing color
     const { startPencil, stopPencil, keepDrawing } = usePencil();
@@ -40,13 +42,11 @@ const CreateWhiteboard = () => {
             // getting the canvas url
             const dataUrl = canvas.toDataURL('image/png');
             // since we have the url we can send the reqeust as follows
-            dispatch(
-                addWhiteboardAsync({
-                    title: 'whiteboard',
-                    imageUrl: dataUrl,
-                    userId: 1,
-                }),
-            );
+            addWhiteboardAsync({
+                title: 'Whiteboard',
+                imageUrl: dataUrl,
+                userId: 1,
+            });
         }
     };
 
