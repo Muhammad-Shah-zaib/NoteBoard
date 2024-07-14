@@ -1,6 +1,5 @@
 import { useId, useLayoutEffect, useRef, useState } from 'react';
 import pencilSvg from '../../assets/whitboard/pencil.svg';
-import downArrowSvg from '../../assets/whitboard/down-arrow.svg';
 import trashSvg from '../../assets/whitboard/trash.svg';
 import shareSvg from '../../assets/whitboard/share.svg';
 import textSvg from '../../assets/whitboard/text.svg';
@@ -17,7 +16,7 @@ export interface createWhiteboardProps {
 }
 const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
     // STORING THE STATES TO UNDO
-    let canvasStates: string[] = [];
+    const canvasStates: string[] = [];
     let canvasStateIndex: number = -1;
 
     // STATE FOR TITLE INPUT
@@ -31,7 +30,7 @@ const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     // STATE FOR CURRENT COLOR
-    const [currentColor] = useState<string>('black'); // State to hold the current drawing color
+    let currentColor = 'black'; // State to hold the current drawing color
 
     // CUSTOM HOOK FOR PENCIL
     const { startPencil, stopPencil, keepDrawing } = usePencil();
@@ -42,9 +41,11 @@ const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
         if (canvas) {
             const ctx = canvas.getContext('2d');
             if (ctx) {
-                canvas.addEventListener('mousedown', (event) =>
-                    startPencil(event, ctx, canvas),
-                );
+                ctx.strokeStyle = currentColor;
+                canvas.addEventListener('mousedown', (event) => {
+                    ctx.strokeStyle = currentColor;
+                    startPencil(event, ctx, canvas);
+                });
                 canvas.addEventListener('mousemove', (event) =>
                     keepDrawing(event, ctx, canvas),
                 );
@@ -60,7 +61,6 @@ const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
                 });
                 window.addEventListener('keydown', (event) => {
                     if (event.key === 'z' || event.key === 'Z') {
-                        console.log(canvasStateIndex);
                         // UNDO
                         if (canvasStateIndex > 0) {
                             // GETTING THE LAST STATE
@@ -87,12 +87,7 @@ const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
                         }
                     } else if (event.key === 'r' || event.key === 'R') {
                         // REDO
-                        console.log('canvas length => ' + canvasStates.length);
-                        console.log(
-                            'Canvas State Index => ' + canvasStateIndex,
-                        );
-
-                        if (canvasStateIndex <= canvasStates.length - 1) {
+                        if (canvasStateIndex < canvasStates.length - 1) {
                             // NOW WE CAN REDO
                             // GETTING THE NEXT STATE
                             canvasStateIndex += 1;
@@ -174,10 +169,22 @@ const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
                     >
                         <img src={textSvg} alt={`pencil`} />
                     </div>
-                    <div
-                        className={`flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-lg bg-zinc-300`}
-                    >
-                        <img src={downArrowSvg} alt={`pencil`} />
+                    {/* COLOR */}
+                    <div className={`relative flex items-center`}>
+                        <select
+                            value={currentColor}
+                            id={`color-select`}
+                            onChange={(e) => {
+                                currentColor = e.target.value;
+                            }}
+                            className={`flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-lg bg-zinc-300 text-black`}
+                        >
+                            <option value={`black`}>Black</option>
+                            <option value={`#22c55e`}>green</option>
+                            <option value={`#0891b2`}>sky</option>
+                            <option value={`#2563eb`}>violet</option>
+                            <option value={`#facc15`}>Yellow</option>
+                        </select>
                     </div>
                     <div
                         className={`flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-lg bg-zinc-300`}

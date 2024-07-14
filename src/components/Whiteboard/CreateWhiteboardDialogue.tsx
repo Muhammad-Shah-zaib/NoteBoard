@@ -38,7 +38,7 @@ const CreateWhiteboardDialogue = ({
         } else {
             createOrUpdateWhiteboard();
             // Now we need to navigate to whiteboard url
-            navigate(`/whiteboard/9999`);
+            navigate(`/whiteboard`);
         }
     };
 
