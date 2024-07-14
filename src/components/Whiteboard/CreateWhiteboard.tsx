@@ -16,12 +16,27 @@ export interface createWhiteboardProps {
     loading: boolean;
 }
 const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
+    // STORING THE STATES TO UNDO
+    let canvasStates: string[] = [];
+    let canvasStateIndex: number = -1;
+
+    // STATE FOR TITLE INPUT
     const [title, setTitle] = useState<string>('');
     const titleInputRef = useRef<HTMLInputElement>(null);
+
+    // STATE FOR WHITEBOARD DIALOG
     const whiteboardId = useId();
+
+    // REF FOR CANVAS
     const canvasRef = useRef<HTMLCanvasElement>(null);
+
+    // STATE FOR CURRENT COLOR
     const [currentColor] = useState<string>('black'); // State to hold the current drawing color
+
+    // CUSTOM HOOK FOR PENCIL
     const { startPencil, stopPencil, keepDrawing } = usePencil();
+
+    // USE LAYOUT EFFECT TO ADD EVENT LISTENERS
     useLayoutEffect(() => {
         const canvas = canvasRef.current;
         if (canvas) {
@@ -33,9 +48,73 @@ const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
                 canvas.addEventListener('mousemove', (event) =>
                     keepDrawing(event, ctx, canvas),
                 );
-                canvas.addEventListener('mouseup', (event) =>
-                    stopPencil(event, ctx, canvas),
-                );
+                canvas.addEventListener('mouseup', (event) => {
+                    // STOP PENCIL
+                    stopPencil(event, ctx, canvas);
+                    // ADDING THE CURRENT DATA URL INTO UNDO STATES
+                    if (canvasStateIndex < canvasStates.length - 1) {
+                        canvasStates.length = canvasStateIndex + 1;
+                    }
+                    canvasStates.push(canvas.toDataURL());
+                    canvasStateIndex += 1;
+                });
+                window.addEventListener('keydown', (event) => {
+                    if (event.key === 'z' || event.key === 'Z') {
+                        console.log(canvasStateIndex);
+                        // UNDO
+                        if (canvasStateIndex > 0) {
+                            // GETTING THE LAST STATE
+                            canvasStateIndex -= 1;
+                            const lastState = canvasStates[canvasStateIndex];
+                            if (lastState) {
+                                // CLEARING THE CANVAS
+                                ctx.clearRect(
+                                    0,
+                                    0,
+                                    canvas.width,
+                                    canvas.height,
+                                );
+                                // DRAWING THE LAST STATE
+                                const img = new Image();
+                                img.onload = () => {
+                                    ctx.drawImage(img, 0, 0);
+                                };
+                                img.src = lastState;
+                            }
+                        } else {
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            canvasStateIndex = -1;
+                        }
+                    } else if (event.key === 'r' || event.key === 'R') {
+                        // REDO
+                        console.log('canvas length => ' + canvasStates.length);
+                        console.log(
+                            'Canvas State Index => ' + canvasStateIndex,
+                        );
+
+                        if (canvasStateIndex <= canvasStates.length - 1) {
+                            // NOW WE CAN REDO
+                            // GETTING THE NEXT STATE
+                            canvasStateIndex += 1;
+                            const nextState = canvasStates[canvasStateIndex];
+                            if (nextState) {
+                                // CLEARING THE CANVAS
+                                ctx.clearRect(
+                                    0,
+                                    0,
+                                    canvas.width,
+                                    canvas.height,
+                                );
+                                // DRAWING THE NEXT STATE
+                                const img = new Image();
+                                img.onload = () => {
+                                    ctx.drawImage(img, 0, 0);
+                                };
+                                img.src = nextState;
+                            }
+                        }
+                    }
+                });
             } else {
                 console.error('Failed to get 2D context for canvas');
             }

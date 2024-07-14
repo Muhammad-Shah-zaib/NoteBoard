@@ -32,7 +32,7 @@ const Dialogue = ({ children, id }: Props) => {
         <div
             ref={dialogueCtnRef}
             id={id}
-            className="fixed z-40 h-[100vh] w-[100vw]"
+            className="fixed z-40 hidden h-[100vh] w-[100vw]"
             tabIndex={0} // Make the div focusable
         >
             <div className="fixed inset-0 h-[100vh] w-[100vw] bg-secondary bg-opacity-70"></div>
