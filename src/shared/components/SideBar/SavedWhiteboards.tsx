@@ -31,6 +31,9 @@ const SavedWhiteboards = ({
                     </h3>
                     <Link
                         to={`/create-whiteboard`}
+                        onClick={() => {
+                            setCurrentWhiteboard(null);
+                        }}
                         className={`hidden p-1 transition-all duration-200 hover:bg-primary group-hover:inline`}
                     >
                         <WriteIcon />
@@ -40,25 +43,26 @@ const SavedWhiteboards = ({
                 <div>
                     {whiteboards
                         .filter((w, i) => {
-                            if (i < 3) {
-                                if (w.title.length > 20) {
-                                    w.title = w.title.substring(0, 20) + '...';
-                                }
+                            if (i < 3 && w.id) {
                                 return true;
                             }
                             return false;
                         })
                         .map((w, i) => (
-                            <div>
+                            <div key={w.id ? w.id : i}>
                                 <Link
-                                    to={`/whiteboard`}
+                                    to={`/update-whiteboard/${w.id}`}
                                     key={i}
                                     onClick={() => {
                                         setCurrentWhiteboard(w);
                                     }}
                                     className={`flex cursor-pointer rounded-lg px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
                                 >
-                                    <span className={`text-sm`}>{w.title}</span>
+                                    <span className={`text-sm`}>
+                                        {w.title.length > 15
+                                            ? w.title.substring(0, 15) + '...'
+                                            : w.title}
+                                    </span>
                                 </Link>
                             </div>
                         ))}

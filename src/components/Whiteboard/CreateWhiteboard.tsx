@@ -5,22 +5,37 @@ import shareSvg from '../../assets/whitboard/share.svg';
 import textSvg from '../../assets/whitboard/text.svg';
 import './whitboard.css';
 import usePencil from '../../customHooks/usePencil.ts';
-import { addWhiteboardAsync } from '../../store/whiteboard/whiteboardApis.ts';
+import {
+    addWhiteboardAsync,
+    updateWhiteboard,
+} from '../../store/whiteboard/whiteboardApis.ts';
 import Dialogue from '../../shared/components/dialogue/Dialogue.tsx';
 import CreateWhiteboardDialogue from './CreateWhiteboardDialogue.tsx';
 import { showComponent } from '../../utils/visibility.ts';
+import { ISingleWhiteboard } from '../../store/whiteboard/types.ts';
 
 export interface createWhiteboardProps {
     addWhiteboardAsync: typeof addWhiteboardAsync;
+    updateWhiteboard: typeof updateWhiteboard;
     loading: boolean;
+    currentWhiteboard: ISingleWhiteboard | null;
 }
-const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
+const CreateWhiteboard = ({
+    addWhiteboardAsync,
+    currentWhiteboard,
+    updateWhiteboard,
+}: createWhiteboardProps) => {
+    // ROUTER URL
+    const url = window.location.href;
+
     // STORING THE STATES TO UNDO
     const canvasStates: string[] = [];
-    let canvasStateIndex: number = -1;
+    let canvasStateIndex: number = currentWhiteboard ? 0 : -1;
 
     // STATE FOR TITLE INPUT
-    const [title, setTitle] = useState<string>('');
+    const [title, setTitle] = useState<string>(
+        currentWhiteboard ? currentWhiteboard.title : '',
+    );
     const titleInputRef = useRef<HTMLInputElement>(null);
 
     // STATE FOR WHITEBOARD DIALOG
@@ -41,8 +56,14 @@ const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
         if (canvas) {
             const ctx = canvas.getContext('2d');
             if (ctx) {
-                ctx.strokeStyle = currentColor;
+                clearCanvas(ctx, {
+                    width: canvas.width,
+                    height: canvas.height,
+                });
+                currentWhiteboard &&
+                    loadImageOnCanvas(ctx, currentWhiteboard.imageUrl);
                 canvas.addEventListener('mousedown', (event) => {
+                    ctx.strokeStyle = currentColor;
                     ctx.strokeStyle = currentColor;
                     startPencil(event, ctx, canvas);
                 });
@@ -68,18 +89,12 @@ const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
                             const lastState = canvasStates[canvasStateIndex];
                             if (lastState) {
                                 // CLEARING THE CANVAS
-                                ctx.clearRect(
-                                    0,
-                                    0,
-                                    canvas.width,
-                                    canvas.height,
-                                );
+                                clearCanvas(ctx, {
+                                    width: canvas.width,
+                                    height: canvas.height,
+                                });
                                 // DRAWING THE LAST STATE
-                                const img = new Image();
-                                img.onload = () => {
-                                    ctx.drawImage(img, 0, 0);
-                                };
-                                img.src = lastState;
+                                loadImageOnCanvas(ctx, lastState);
                             }
                         } else {
                             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -94,18 +109,12 @@ const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
                             const nextState = canvasStates[canvasStateIndex];
                             if (nextState) {
                                 // CLEARING THE CANVAS
-                                ctx.clearRect(
-                                    0,
-                                    0,
-                                    canvas.width,
-                                    canvas.height,
-                                );
+                                clearCanvas(ctx, {
+                                    width: canvas.width,
+                                    height: canvas.height,
+                                });
                                 // DRAWING THE NEXT STATE
-                                const img = new Image();
-                                img.onload = () => {
-                                    ctx.drawImage(img, 0, 0);
-                                };
-                                img.src = nextState;
+                                loadImageOnCanvas(ctx, nextState);
                             }
                         }
                     }
@@ -114,9 +123,24 @@ const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
                 console.error('Failed to get 2D context for canvas');
             }
         }
-    }, [currentColor]); // Include currentColor in dependencies to update stroke style when color changes
-
-    const createWhiteboard = () => {
+    }, [currentColor, currentWhiteboard]); // Include currentColor in dependencies to update stroke style when color changes
+    const loadImageOnCanvas = (
+        ctx: CanvasRenderingContext2D,
+        imageUrl: string,
+    ) => {
+        const img = new Image();
+        img.onload = () => {
+            ctx.drawImage(img, 0, 0);
+        };
+        img.src = imageUrl;
+    };
+    const clearCanvas = (
+        ctx: CanvasRenderingContext2D,
+        { width, height }: { width: number; height: number },
+    ) => {
+        ctx.clearRect(0, 0, width, height);
+    };
+    const createOrUpdate = () => {
         const canvas = canvasRef.current;
         if (canvas) {
             const titleInput = titleInputRef.current;
@@ -124,12 +148,22 @@ const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
                 // getting the canvas url
                 const dataUrl = canvas.toDataURL('image/png');
 
-                // DISPATCHING THE EVENT TO ADD THE WHITEBOARD
-                addWhiteboardAsync({
-                    title: titleInput.value,
-                    imageUrl: dataUrl,
-                    userId: 1,
-                });
+                if (url.includes('create')) {
+                    // DISPATCHING THE EVENT TO ADD THE WHITEBOARD
+                    addWhiteboardAsync({
+                        title: titleInput.value,
+                        imageUrl: dataUrl,
+                        userId: 1,
+                    });
+                } else if (url.includes('update')) {
+                    if (currentWhiteboard && currentWhiteboard.id)
+                        updateWhiteboard({
+                            title: titleInput.value,
+                            imageUrl: dataUrl,
+                            userId: 1,
+                            whiteboardId: currentWhiteboard.id,
+                        });
+                }
             }
         }
     };
@@ -142,7 +176,7 @@ const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
                     titleInputRef={titleInputRef}
                     titleState={title}
                     setTitleState={setTitle}
-                    createOrUpdateWhiteboard={createWhiteboard}
+                    createOrUpdateWhiteboard={createOrUpdate}
                 />
             </Dialogue>
             <div className={`h-full w-full overflow-auto rounded-lg bg-white`}>
@@ -172,7 +206,6 @@ const CreateWhiteboard = ({ addWhiteboardAsync }: createWhiteboardProps) => {
                     {/* COLOR */}
                     <div className={`relative flex items-center`}>
                         <select
-                            value={currentColor}
                             id={`color-select`}
                             onChange={(e) => {
                                 currentColor = e.target.value;

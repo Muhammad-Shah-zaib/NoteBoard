@@ -10,7 +10,6 @@ const ViewWhiteboard = ({ currentWhiteboard }: IViewWhiteboardProps) => {
 
     // USE EFFECT HOOK
     useEffect(() => {
-        console.log(currentWhiteboard);
         const canvas = canvasRef.current;
         if (!canvas) return;
 

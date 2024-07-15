@@ -5,12 +5,15 @@ import {
     IAddWhiteboardRequestDto,
     IAddWhiteboardResponseDto,
     ISingleWhiteboard,
+    IUpdateWhiteboardRequestDto,
+    IUpdateWhiteboardResponseDto,
     IWhiteboardState,
 } from './types.ts';
 
 // ACTIONS
 const ADD_WHITEBOARD = 'whiteboard/addWhiteboard';
 const FETCH_WHITEBOARDS_WITH_USER_ID = 'whiteboard/fetchWhiteboardsWithUserId';
+const UPDATE_WHITEBOARD = `whiteboard/updateWhiteboard`;
 
 export const addWhiteboardAsync = createAsyncThunk<
     IAddWhiteboardResponseDto,
@@ -52,5 +55,33 @@ export const fetchWhiteboardWithUserIdAsync = createAsyncThunk<
     );
 
     // RETURNING JSON OBJ
+    return await response.json();
+});
+
+// update whiteboard
+export const updateWhiteboard = createAsyncThunk<
+    IUpdateWhiteboardResponseDto,
+    IUpdateWhiteboardRequestDto,
+    { state: IWhiteboardState }
+>(UPDATE_WHITEBOARD, async ({ userId, whiteboardId, title, imageUrl }) => {
+    const requestParams: URLSearchParams = new URLSearchParams({
+        userId: userId.toString(),
+    });
+
+    const requestOptions = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title, imageUrl }),
+    };
+
+    const response = await fetch(
+        WHITEBOARD_ENDPOINT +
+            `/${whiteboardId}` +
+            `?${requestParams.toString()}`,
+        requestOptions,
+    );
+
     return await response.json();
 });
