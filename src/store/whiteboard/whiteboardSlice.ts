@@ -1,5 +1,6 @@
 import {
     IAddWhiteboardResponseDto,
+    IDeleteWhiteboardResponseDto,
     ISingleWhiteboard,
     IUpdateWhiteboardResponseDto,
     IWhiteboardState,
@@ -7,6 +8,7 @@ import {
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
     addWhiteboardAsync,
+    deleteWhiteboard,
     fetchWhiteboardWithUserIdAsync,
     updateWhiteboard,
 } from './whiteboardApis.ts';
@@ -64,6 +66,15 @@ const whiteboardSlice = createSlice({
                         state.whiteboards = payload.whiteboards;
                         state.currentWhiteboard = payload.whiteboard;
                     }
+                },
+            )
+            .addCase(
+                deleteWhiteboard.fulfilled,
+                (
+                    state,
+                    { payload }: PayloadAction<IDeleteWhiteboardResponseDto>,
+                ) => {
+                    state.whiteboards = payload.whiteboards;
                 },
             );
     },

@@ -4,6 +4,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
     IAddWhiteboardRequestDto,
     IAddWhiteboardResponseDto,
+    IDeleteWhiteboardRequestDto,
+    IDeleteWhiteboardResponseDto,
+    IRequestOptopns,
     ISingleWhiteboard,
     IUpdateWhiteboardRequestDto,
     IUpdateWhiteboardResponseDto,
@@ -14,6 +17,7 @@ import {
 const ADD_WHITEBOARD = 'whiteboard/addWhiteboard';
 const FETCH_WHITEBOARDS_WITH_USER_ID = 'whiteboard/fetchWhiteboardsWithUserId';
 const UPDATE_WHITEBOARD = `whiteboard/updateWhiteboard`;
+const DELETE_WHITEBOARD = 'whiteboard/deleteWhiteboard';
 
 export const addWhiteboardAsync = createAsyncThunk<
     IAddWhiteboardResponseDto,
@@ -74,6 +78,29 @@ export const updateWhiteboard = createAsyncThunk<
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ title, imageUrl }),
+    };
+
+    const response = await fetch(
+        WHITEBOARD_ENDPOINT +
+            `/${whiteboardId}` +
+            `?${requestParams.toString()}`,
+        requestOptions,
+    );
+
+    return await response.json();
+});
+
+export const deleteWhiteboard = createAsyncThunk<
+    IDeleteWhiteboardResponseDto,
+    IDeleteWhiteboardRequestDto,
+    { state: IWhiteboardState }
+>(DELETE_WHITEBOARD, async ({ whiteboardId, userId }) => {
+    const requestParams: URLSearchParams = new URLSearchParams({
+        userId: userId.toString(),
+    });
+
+    const requestOptions: IRequestOptopns = {
+        method: 'DELETE',
     };
 
     const response = await fetch(

@@ -1,3 +1,21 @@
+interface response {
+    statusCode: number;
+    ok: boolean;
+    message: string;
+    error: string[];
+}
+interface request {
+    whiteboardId: number;
+    userId: number;
+}
+export interface IRequestOptopns {
+    method: string;
+    headers?: {
+        'Content-Type': 'application/json';
+    };
+    body?: string;
+}
+
 export interface IWhiteboardState {
     whiteboards: ISingleWhiteboard[];
     currentWhiteboard: ISingleWhiteboard | null;
@@ -32,11 +50,14 @@ export interface IUpdateWhiteboardRequestDto {
     whiteboardId: number;
 }
 
-export interface IUpdateWhiteboardResponseDto {
-    statusCode: number;
-    ok: boolean;
-    message: string;
-    error: string[];
+export interface IUpdateWhiteboardResponseDto extends response {
     whiteboard: ISingleWhiteboard;
     whiteboards: ISingleWhiteboard[];
 }
+
+export interface IDeleteWhiteboardResponseDto extends response {
+    whiteboard: ISingleWhiteboard;
+    whiteboards: ISingleWhiteboard[];
+}
+
+export interface IDeleteWhiteboardRequestDto extends request {}

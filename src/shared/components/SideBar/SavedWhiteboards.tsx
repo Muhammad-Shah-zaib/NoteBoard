@@ -42,12 +42,7 @@ const SavedWhiteboards = ({
                 {/* existing whiteboards */}
                 <div>
                     {whiteboards
-                        .filter((w, i) => {
-                            if (i < 3 && w.id) {
-                                return true;
-                            }
-                            return false;
-                        })
+                        .filter((_, i) => i < 2)
                         .map((w, i) => (
                             <div key={w.id ? w.id : i}>
                                 <Link
@@ -66,6 +61,14 @@ const SavedWhiteboards = ({
                                 </Link>
                             </div>
                         ))}
+                    {whiteboards.length > 2 && (
+                        <Link
+                            to={`view-all-whiteboards`}
+                            className={`my-1 flex w-full cursor-pointer rounded-lg px-2 py-2 font-mono text-xs font-bold underline-offset-4 hover:bg-primary hover:underline`}
+                        >
+                            <p className={`w-full text-center`}>View All</p>
+                        </Link>
+                    )}
                 </div>
             </div>
         </>
