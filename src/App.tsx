@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
+import Register from './shared/pages/register';
 import MasterLayout from './shared/layout/MasterLayout';
 import Notes from './components/Notes/Notes.tsx';
 import CreateNotesContainer from './containers/CreateNotesContainer.tsx';
@@ -14,6 +15,10 @@ function App() {
         <>
             <BrowserRouter>
                 <Routes>
+                    <Route
+                        path={`/register/:emailVerificationToken`}
+                        element={<Register />}
+                    />
                     <Route path={`/`} element={<Navigate to={`/notes`} />} />
                     {/* master layout */}
                     <Route path={'/'} element={<MasterLayout />}>
