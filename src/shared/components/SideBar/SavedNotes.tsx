@@ -9,6 +9,7 @@ import {
     fetchNotesByUserId,
 } from '../../../store/Notes/notesApis.ts';
 import Button from '../../button/Button.tsx';
+import { useAppDispatch, useAppSelector } from '../../../store/store.ts';
 
 // exporting this interface as it is needed for the container
 export interface SavedNotesProps {
@@ -28,6 +29,8 @@ const SavedNotes: React.FC<SavedNotesProps> = ({
     useEffect(() => {
         fetchNotesByUserId(1);
     }, []);
+    const userDto = useAppSelector(state => state.usersSlice.userDto);
+    console.log(userDto);
     return (
         <>
             <div className={`saved-notes-ctn`}>

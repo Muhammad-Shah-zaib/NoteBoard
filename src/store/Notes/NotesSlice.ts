@@ -114,9 +114,11 @@ export const notesSlice = createSlice({
             );
     },
 });
+// reducer
+export default notesSlice.reducer;
+// action creaters
 export const { createNote, updateCurrentNote, updateNoteAndNotes, deleteNote } =
     notesSlice.actions;
-export default notesSlice.reducer;
 
 // selectors
 export const notesSelector = createDraftSafeSelector(
