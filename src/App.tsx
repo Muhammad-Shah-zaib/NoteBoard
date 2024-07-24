@@ -10,6 +10,7 @@ import CreateWhiteboardContainer from './containers/CreateWhiteboardContainer.ts
 import ViewWhitebaordContainer from './containers/ViewWhitebaordContainer.tsx';
 import ViewAllWhiteboardsContainer from './containers/ViewAllWhiteboardsContainer.tsx';
 import EmailVerificationContainer from './containers/EmailVerificationContainer.tsx';
+import Signup from './shared/pages/SIgnup.tsx';
 
 function App() {
     return (
@@ -19,6 +20,10 @@ function App() {
                     <Route
                         path={`/verify-email/:emailVerificationToken`}
                         element={<EmailVerificationContainer />}
+                    />
+                    <Route
+                        path={`/signup`}
+                        element={<Signup />}
                     />
                     <Route path={`/`} element={<Navigate to={`/notes`} />} />
                     {/* master layout */}

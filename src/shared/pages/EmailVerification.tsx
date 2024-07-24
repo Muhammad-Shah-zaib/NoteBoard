@@ -23,7 +23,7 @@ const EmailVerification = ({userDto, error, verifyEmailAsync}: TEmailVerificatio
                             <span className={`text-red-700`}>{error.message}</span>
                     }
                     {
-                        error === null && userDto === null &&
+                       error === null && userDto === null &&
                         <>
                             <span>Please wait... </span>
                             <p className={`font-mono text-xl font-bold text-primary-500`}>
