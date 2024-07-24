@@ -1,6 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
-import EmailVerification from './shared/pages/EmailVerification.tsx';
 import MasterLayout from './shared/layout/MasterLayout';
 import Notes from './components/Notes/Notes.tsx';
 import CreateNotesContainer from './containers/CreateNotesContainer.tsx';
@@ -10,7 +9,7 @@ import CreateWhiteboardContainer from './containers/CreateWhiteboardContainer.ts
 import ViewWhitebaordContainer from './containers/ViewWhitebaordContainer.tsx';
 import ViewAllWhiteboardsContainer from './containers/ViewAllWhiteboardsContainer.tsx';
 import EmailVerificationContainer from './containers/EmailVerificationContainer.tsx';
-import Signup from './shared/pages/SIgnup.tsx';
+import SignUpContainer from './containers/SignUpContainer.tsx';
 
 function App() {
     return (
@@ -23,7 +22,7 @@ function App() {
                     />
                     <Route
                         path={`/signup`}
-                        element={<Signup />}
+                        element={<SignUpContainer />}
                     />
                     <Route path={`/`} element={<Navigate to={`/notes`} />} />
                     {/* master layout */}
