@@ -10,12 +10,17 @@ import ViewWhitebaordContainer from './containers/ViewWhitebaordContainer.tsx';
 import ViewAllWhiteboardsContainer from './containers/ViewAllWhiteboardsContainer.tsx';
 import EmailVerificationContainer from './containers/EmailVerificationContainer.tsx';
 import SignUpContainer from './containers/SignUpContainer.tsx';
+import Login from './shared/pages/login.tsx';
 
 function App() {
     return (
         <>
             <BrowserRouter>
                 <Routes>
+                    <Route
+                        path={`/login`}
+                        element={<Login />}
+                    />
                     <Route
                         path={`/verify-email/:emailVerificationToken`}
                         element={<EmailVerificationContainer />}
