@@ -8,7 +8,7 @@ interface request {
     whiteboardId: number;
     userId: number;
 }
-export interface IRequestOptopns {
+export interface IRequestOptions {
     method: string;
     headers?: {
         'Content-Type': 'application/json';

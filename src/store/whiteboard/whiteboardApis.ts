@@ -6,7 +6,7 @@ import {
     IAddWhiteboardResponseDto,
     IDeleteWhiteboardRequestDto,
     IDeleteWhiteboardResponseDto,
-    IRequestOptopns,
+    IRequestOptions,
     ISingleWhiteboard,
     IUpdateWhiteboardRequestDto,
     IUpdateWhiteboardResponseDto,
@@ -99,7 +99,7 @@ export const deleteWhiteboard = createAsyncThunk<
         userId: userId.toString(),
     });
 
-    const requestOptions: IRequestOptopns = {
+    const requestOptions: IRequestOptions = {
         method: 'DELETE',
     };
 

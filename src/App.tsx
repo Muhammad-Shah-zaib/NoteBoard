@@ -10,25 +10,24 @@ import ViewWhitebaordContainer from './containers/ViewWhitebaordContainer.tsx';
 import ViewAllWhiteboardsContainer from './containers/ViewAllWhiteboardsContainer.tsx';
 import EmailVerificationContainer from './containers/EmailVerificationContainer.tsx';
 import SignUpContainer from './containers/SignUpContainer.tsx';
-import Login from './shared/pages/login.tsx';
+import LoginContainer from './containers/loginContainer.tsx';
+import LoginVerification from './shared/pages/loginVerification.tsx';
 
 function App() {
     return (
         <>
             <BrowserRouter>
                 <Routes>
+                    <Route path={`/login`} element={<LoginContainer />} />
                     <Route
-                        path={`/login`}
-                        element={<Login />}
+                        path={`/verify-login/:loginVerificationToken`}
+                        element={<LoginVerification />}
                     />
                     <Route
                         path={`/verify-email/:emailVerificationToken`}
                         element={<EmailVerificationContainer />}
                     />
-                    <Route
-                        path={`/signup`}
-                        element={<SignUpContainer />}
-                    />
+                    <Route path={`/signup`} element={<SignUpContainer />} />
                     <Route path={`/`} element={<Navigate to={`/notes`} />} />
                     {/* master layout */}
                     <Route path={'/'} element={<MasterLayout />}>

@@ -14,6 +14,9 @@ export interface IUserState {
     userDto : IUserDto | null;
     error: IErrorDto | null;
     signUpSuccessMessage: string | null;
+    loginStatus: boolean;
+    incorrectEmail: boolean;
+    loginPending: boolean;
 }
 // INTERFACE FOR SINGLE USER DTO
 export interface IUserDto {
@@ -35,3 +38,9 @@ export interface ISingUpResponseDto extends response {
 }
 
 export interface ISignUpRequestDto extends IUserDto {}
+
+
+// INTERFACES FOR LOGIN
+export interface ILoginResponseDto extends response {
+    user: IUserDto
+}
