@@ -10,16 +10,27 @@ import {
     createCaseAsync,
     fetchNoteById,
 } from '../store/Notes/notesApis.ts';
+import { IUserDto } from '../store/Users/types.ts';
 
-const mapStateToProps = (state: RootState) => ({
-    notes: notesSelector(state),
-});
+type TMapStateToProps = (state: RootState) => {
+    notes: ISingleNote[];
+    userDto: IUserDto | null;
+};
 
 type TMapDispatchToProps = (dispatch: AppDispatch) => {
     updateCurrentNote: ActionCreatorWithPayload<ISingleNote, string>;
     fetchNotesByUserId: typeof fetchNotesByUserId;
     fetchNoteById: typeof fetchNoteById;
 };
+
+export type TSavedNotesProps = ReturnType<TMapStateToProps> &
+    ReturnType<TMapDispatchToProps>;
+
+const mapStateToProps: TMapStateToProps = (state: RootState) => ({
+    notes: notesSelector(state),
+    userDto: state.usersSlice.userDto,
+});
+
 const mapDispatchToProps: TMapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {

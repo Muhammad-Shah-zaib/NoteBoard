@@ -5,18 +5,26 @@ import { setCurrentWhiteboard } from '../store/whiteboard/whiteboardSlice.ts';
 import { connect } from 'react-redux';
 import SavedWhiteboards from '../shared/components/SideBar/SavedWhiteboards.tsx';
 import { fetchWhiteboardWithUserIdAsync } from '../store/whiteboard/whiteboardApis.ts';
+import { IUserDto } from '../store/Users/types.ts';
 
+// TYPES
 type TMapStateToProps = (state: RootState) => {
     whiteboards: ISingleWhiteboard[];
+    userDto: IUserDto | null;
 };
-const mapStateToProps: TMapStateToProps = (state) => ({
-    whiteboards: state.whiteboardSlice.whiteboards,
-});
-
 type TMapDispatchToProps = (dispatch: AppDispatch) => {
     setCurrentWhiteboard: typeof setCurrentWhiteboard;
     fetchWhiteboardsByUserIdAsync: typeof fetchWhiteboardWithUserIdAsync;
 };
+
+export type TSavedWhiteboardProps = ReturnType<TMapStateToProps> &
+    ReturnType<TMapDispatchToProps>;
+
+const mapStateToProps: TMapStateToProps = (state) => ({
+    whiteboards: state.whiteboardSlice.whiteboards,
+    userDto: state.usersSlice.userDto,
+});
+
 const mapDispatchToProps: TMapDispatchToProps = (dispatch) => {
     return bindActionCreators(
         {

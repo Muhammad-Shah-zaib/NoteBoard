@@ -23,6 +23,7 @@ export const initialState: INotesState = {
     notes: [],
     fetchingNotes: false,
     currentNote: null,
+    userDto: null,
 };
 
 export const notesSlice = createSlice({
@@ -111,7 +112,7 @@ export const notesSlice = createSlice({
                         state.notes = notes;
                     }
                 },
-            );
+            )
     },
 });
 // reducer

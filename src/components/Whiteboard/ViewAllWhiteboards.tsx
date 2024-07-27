@@ -6,19 +6,14 @@ import {
     IDeleteWhiteboardRequestDto,
     ISingleWhiteboard,
 } from '../../store/whiteboard/types.ts';
-import { setCurrentWhiteboard } from '../../store/whiteboard/whiteboardSlice.ts';
-import { deleteWhiteboard } from '../../store/whiteboard/whiteboardApis.ts';
+import { TViewAllWHiteboardsProps } from '../../containers/ViewAllWhiteboardsContainer.tsx';
 
-export interface IViewAllWhiteboardProps {
-    whiteboards: ISingleWhiteboard[];
-    setCurrentWhiteboard: typeof setCurrentWhiteboard;
-    deleteWhiteboard: typeof deleteWhiteboard;
-}
 const ViewAllWhiteboards = ({
+    userDto,
     whiteboards,
     setCurrentWhiteboard,
     deleteWhiteboard,
-}: IViewAllWhiteboardProps) => {
+}: TViewAllWHiteboardsProps) => {
     // ROUTER HOOKS
     const navigate = useNavigate();
 
@@ -61,7 +56,9 @@ const ViewAllWhiteboards = ({
                                         if (wb.id) {
                                             handleDelete({
                                                 whiteboardId: wb.id!,
-                                                userId: 1,
+                                                userId: Number.parseInt(
+                                                    userDto.id,
+                                                ),
                                             });
                                         }
                                     }}

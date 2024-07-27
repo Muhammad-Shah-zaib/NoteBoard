@@ -17,6 +17,8 @@ export interface IUserState {
     loginStatus: boolean;
     incorrectEmail: boolean;
     loginPending: boolean;
+    loginVerificationPending: boolean;
+    loginVerifiedStatus: boolean;
 }
 // INTERFACE FOR SINGLE USER DTO
 export interface IUserDto {

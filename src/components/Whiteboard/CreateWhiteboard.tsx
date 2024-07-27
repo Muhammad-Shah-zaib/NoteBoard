@@ -5,26 +5,17 @@ import saveSvg from '../../assets/whitboard/save.svg';
 import downArrow from '../../assets/whitboard/down-arrow.svg';
 import './whitboard.css';
 import usePencil from '../../customHooks/usePencil.ts';
-import {
-    addWhiteboardAsync,
-    updateWhiteboard,
-} from '../../store/whiteboard/whiteboardApis.ts';
 import Dialogue from '../../shared/components/dialogue/Dialogue.tsx';
 import CreateWhiteboardDialogue from './CreateWhiteboardDialogue.tsx';
 import { showComponent } from '../../utils/visibility.ts';
-import { ISingleWhiteboard } from '../../store/whiteboard/types.ts';
+import { TCreateWhiteboardProps } from '../../containers/CreateWhiteboardContainer.tsx';
 
-export interface createWhiteboardProps {
-    addWhiteboardAsync: typeof addWhiteboardAsync;
-    updateWhiteboard: typeof updateWhiteboard;
-    loading: boolean;
-    currentWhiteboard: ISingleWhiteboard | null;
-}
 const CreateWhiteboard = ({
+    userDto,
     addWhiteboardAsync,
     currentWhiteboard,
     updateWhiteboard,
-}: createWhiteboardProps) => {
+}: TCreateWhiteboardProps) => {
     // ROUTER URL
     const url = window.location.href;
 
@@ -164,15 +155,15 @@ const CreateWhiteboard = ({
                     addWhiteboardAsync({
                         title: titleInput.value,
                         imageUrl: dataUrl,
-                        userId: 1,
+                        userId: Number.parseInt(userDto.id),
                     });
                 } else if (url.includes('update')) {
                     if (currentWhiteboard && currentWhiteboard.id)
                         updateWhiteboard({
                             title: titleInput.value,
                             imageUrl: dataUrl,
-                            userId: 1,
-                            whiteboardId: currentWhiteboard.id,
+                            userId: userDto.id,
+                            whiteboardId: Number.parseInt(currentWhiteboard.id),
                         });
                 }
             }

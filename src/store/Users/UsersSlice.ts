@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ILoginResponseDto, ISingUpResponseDto, IUserState, IVerifyEmailResponse } from "./types";
-import { loginAsync, signUpAsync, verifyEmailAsync } from "./UsersApis";
+import { ILoginResponseDto, ISingUpResponseDto, IUserDto, IUserState, IVerifyEmailResponse } from "./types";
+import { loginAsync, signUpAsync, verifyEmailAsync, verifyLoginAsync } from "./UsersApis";
 
 // initial state
 export const initialState: IUserState = {
@@ -10,10 +10,12 @@ export const initialState: IUserState = {
     loginStatus: false,
     incorrectEmail: false,
     loginPending: false,
+    loginVerificationPending: false,
+    loginVerifiedStatus: false,
 }
 
 // slice
-export const notesSlice = createSlice({
+export const usersSlice = createSlice({
     name: 'users',
     initialState,
     reducers: { 
@@ -22,9 +24,13 @@ export const notesSlice = createSlice({
             if (action.payload.status == undefined) {
                 state.loginStatus = !state.loginStatus;
             }else {
-                  state.loginStatus = action.payload.status;
+                state.loginStatus = action.payload.status;
             }
         }, 
+        updateUserDto: (state, { payload: {userDto}}: PayloadAction<{userDto: IUserDto}>) => {
+            state.userDto = userDto;
+            console.log(userDto);
+        }
     },
     extraReducers: (builder)=> {
         builder
@@ -69,11 +75,28 @@ export const notesSlice = createSlice({
                 }
             }).addCase(loginAsync.pending, state => {
                 state.loginPending = true;
+            }).addCase(verifyLoginAsync.fulfilled, (state, {payload}: PayloadAction<ILoginResponseDto>)=> {
+                state.loginVerificationPending = false;                   
+                // if the token is valid
+                if (payload.ok && payload.statusCode === 200) {
+                    state.userDto = payload.user;
+                    state.loginVerifiedStatus = true;
+                    localStorage.setItem('userDto', JSON.stringify(payload.user) );
+                }
+                // if token is not valid
+                else if(!payload.ok && payload.statusCode === 404) {
+                    state.loginVerifiedStatus = false;
+                    state.error = {
+                        statusCode: 404,
+                        message: "Invalid token"
+                    }
+                } 
+            }).addCase(verifyLoginAsync.pending, state => {
+                state.loginVerificationPending = true;
             })
-            
     }
 })
 
-export default notesSlice.reducer;
+export default usersSlice.reducer;
 
-export const { updateLoginStatus } = notesSlice.actions;
+export const { updateLoginStatus, updateUserDto } = usersSlice.actions;

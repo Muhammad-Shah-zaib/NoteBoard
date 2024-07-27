@@ -2,20 +2,15 @@ import { IDeleteNoteRequestDto, ISingleNote } from '../../store/Notes/types.ts';
 import CloseBtnSvg from '../../assets/button-svgs/CloseBtnSvg.tsx';
 import Button from '../../shared/button/Button.tsx';
 import { useNavigate } from 'react-router-dom';
-import { updateCurrentNote } from '../../store/Notes/NotesSlice.ts';
-import { deleteNoteById } from '../../store/Notes/notesApis.ts';
 import EditBtnSvg from '../../assets/button-svgs/EditBtnSvg.tsx';
+import { TViewAllNotesProps } from '../../containers/ViewAllNotesContainer.tsx';
 
-export interface IViewAllNotesProps {
-    notes: ISingleNote[];
-    updateCurrentNote: typeof updateCurrentNote;
-    deleteNoteById: typeof deleteNoteById;
-}
 const ViewAllNotes = ({
+    userDto,
     notes,
     updateCurrentNote,
     deleteNoteById,
-}: IViewAllNotesProps) => {
+}: TViewAllNotesProps) => {
     const navigate = useNavigate();
     const handleCurrentNote = (note: ISingleNote) => {
         updateCurrentNote(note);
@@ -52,7 +47,9 @@ const ViewAllNotes = ({
                                             if (n.id) {
                                                 handleDelete({
                                                     noteId: n.id!,
-                                                    userId: n.userId,
+                                                    userId: Number.parseInt(
+                                                        userDto.id,
+                                                    ),
                                                 });
                                             }
                                         }

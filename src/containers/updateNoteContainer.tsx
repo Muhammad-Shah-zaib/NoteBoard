@@ -4,13 +4,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from '@reduxjs/toolkit';
 import UpdateNote from '../components/Notes/UpdateNote.tsx';
 import { ISingleNote } from '../store/Notes/types.ts';
-import { currentNoteSelector } from '../store/Notes/NotesSlice.ts';
 
 type TMapStateToProps = (state: RootState) => {
     currentNote: ISingleNote;
 };
 const mapStateToProps: TMapStateToProps = (state: RootState) => ({
-    currentNote: currentNoteSelector(state)!, // the click will only be available when there is some note already present
+    currentNote: state.notesSlice.currentNote!, // the click will only be available when there is some note already present
 });
 
 type TMapDispatchToProps = (dispatch: AppDispatch) => {

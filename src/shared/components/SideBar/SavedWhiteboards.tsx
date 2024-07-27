@@ -1,26 +1,19 @@
 import './SideBar.css';
 import WriteIcon from '../../../assets/button-svgs/WriteIcon.tsx';
 import { Link } from 'react-router-dom';
-import { ISingleWhiteboard } from '../../../store/whiteboard/types.ts';
 import { useEffect } from 'react';
-import { fetchWhiteboardWithUserIdAsync } from '../../../store/whiteboard/whiteboardApis.ts';
-import { setCurrentWhiteboard } from '../../../store/whiteboard/whiteboardSlice.ts';
-
-export interface ISavedWhiteboardsProps {
-    whiteboards: ISingleWhiteboard[];
-    fetchWhiteboardsByUserIdAsync: typeof fetchWhiteboardWithUserIdAsync;
-    setCurrentWhiteboard: typeof setCurrentWhiteboard;
-}
+import { TSavedWhiteboardProps } from '../../../containers/SavedWhiteboardsContainer.tsx';
 
 const SavedWhiteboards = ({
+    userDto,
     whiteboards,
     fetchWhiteboardsByUserIdAsync,
     setCurrentWhiteboard,
-}: ISavedWhiteboardsProps) => {
+}: TSavedWhiteboardProps) => {
     // ROUTE HOOKS
     // USE EFFECT
     useEffect(() => {
-        fetchWhiteboardsByUserIdAsync({ userId: 1 });
+        fetchWhiteboardsByUserIdAsync({ userId: Number.parseInt(userDto!.id) });
     }, [fetchWhiteboardsByUserIdAsync]);
     return (
         <>
@@ -41,6 +34,13 @@ const SavedWhiteboards = ({
                 </div>
                 {/* existing whiteboards */}
                 <div>
+                    {whiteboards.length == 0 && (
+                        <p
+                            className={`text-center font-mono text-sm text-primary-500`}
+                        >
+                            <em>You have no saved notes</em>
+                        </p>
+                    )}
                     {whiteboards
                         .filter((_, i) => i < 2)
                         .map((w, i) => (

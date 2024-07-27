@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ILoginResponseDto, ISignUpRequestDto, ISingUpResponseDto, IUserState, IVerifyEmailResponse } from "./types";
-import { LOGIN_ENDPOINT, SINGUP_ENDPOINT, VERIFY_EMAIL_ENDPOINT } from "../../environment/environment";
+import { LOGIN_ENDPOINT, SINGUP_ENDPOINT, VERIFY_EMAIL_ENDPOINT, VERIFY_LOGIN_ENDPOINT } from "../../environment/environment";
 import { IRequestOptions } from "../whiteboard/types";
 // ACTIONS
 export const VERIFY_EMAIL: string = 'users/verifyEmail';
@@ -16,7 +16,6 @@ export const verifyEmailAsync = createAsyncThunk<
 >(
     VERIFY_EMAIL,
     async (token: string) => {
-        console.log('token', token);
         // request options
         const requestOptions: IRequestOptions = {
             method: 'POST',
@@ -82,7 +81,7 @@ export const loginAsync = createAsyncThunk<
 )
 
 // verify login async thunk
-const verifyLoginAsync = createAsyncThunk<
+export const verifyLoginAsync = createAsyncThunk<
     ILoginResponseDto,
     {token: string},
     {state: IUserState}
@@ -90,9 +89,9 @@ const verifyLoginAsync = createAsyncThunk<
     LOGIN_VERIFCATION,
     async ({ token }) => {
         // VERIFY-LOGIN IS A GET REQUEST SO NO NEED FOR REQUEST OPTIONS
-
         // fetch call
-        const response = await fetch(LOGIN_ENDPOINT + token);
+        const response = await fetch(VERIFY_LOGIN_ENDPOINT + token);
+    
 
         return await response.json();
     }

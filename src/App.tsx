@@ -11,7 +11,8 @@ import ViewAllWhiteboardsContainer from './containers/ViewAllWhiteboardsContaine
 import EmailVerificationContainer from './containers/EmailVerificationContainer.tsx';
 import SignUpContainer from './containers/SignUpContainer.tsx';
 import LoginContainer from './containers/loginContainer.tsx';
-import LoginVerification from './shared/pages/loginVerification.tsx';
+import LoginVerificationContainer from './containers/LoginVerificationContainer.tsx';
+import AuthGuard from './guards/AuthGuard.tsx';
 
 function App() {
     return (
@@ -21,7 +22,7 @@ function App() {
                     <Route path={`/login`} element={<LoginContainer />} />
                     <Route
                         path={`/verify-login/:loginVerificationToken`}
-                        element={<LoginVerification />}
+                        element={<LoginVerificationContainer />}
                     />
                     <Route
                         path={`/verify-email/:emailVerificationToken`}
@@ -30,36 +31,38 @@ function App() {
                     <Route path={`/signup`} element={<SignUpContainer />} />
                     <Route path={`/`} element={<Navigate to={`/notes`} />} />
                     {/* master layout */}
-                    <Route path={'/'} element={<MasterLayout />}>
-                        <Route path={'notes'} element={<Notes />} />
-                        <Route
-                            path={'create-notes'}
-                            element={<CreateNotesContainer />}
-                        />
-                        <Route
-                            path={`update-notes/:id`}
-                            element={<UpdateNoteContainer />}
-                        />
-                        <Route
-                            path={`view-all-notes`}
-                            element={<ViewAllNotesContainer />}
-                        />
-                        <Route
-                            path={`/create-whiteboard`}
-                            element={<CreateWhiteboardContainer />}
-                        />
-                        <Route
-                            path={`/update-whiteboard/:id`}
-                            element={<CreateWhiteboardContainer />}
-                        />
-                        <Route
-                            path={`/whiteboard`}
-                            element={<ViewWhitebaordContainer />}
-                        />
-                        <Route
-                            path={`/view-all-whiteboards`}
-                            element={<ViewAllWhiteboardsContainer />}
-                        />
+                    <Route path="/" element={<AuthGuard />}>
+                        <Route path={'/'} element={<MasterLayout />}>
+                            <Route path={'notes'} element={<Notes />} />
+                            <Route
+                                path={'create-notes'}
+                                element={<CreateNotesContainer />}
+                            />
+                            <Route
+                                path={`update-notes/:id`}
+                                element={<UpdateNoteContainer />}
+                            />
+                            <Route
+                                path={`view-all-notes`}
+                                element={<ViewAllNotesContainer />}
+                            />
+                            <Route
+                                path={`/create-whiteboard`}
+                                element={<CreateWhiteboardContainer />}
+                            />
+                            <Route
+                                path={`/update-whiteboard/:id`}
+                                element={<CreateWhiteboardContainer />}
+                            />
+                            <Route
+                                path={`/whiteboard`}
+                                element={<ViewWhitebaordContainer />}
+                            />
+                            <Route
+                                path={`/view-all-whiteboards`}
+                                element={<ViewAllWhiteboardsContainer />}
+                            />
+                        </Route>
                     </Route>
                 </Routes>
             </BrowserRouter>

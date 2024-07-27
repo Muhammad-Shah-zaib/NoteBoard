@@ -1,25 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom';
 import WriteIcon from '../../../assets/button-svgs/WriteIcon.tsx';
-import { ISingleNote } from '../../../store/Notes/types.ts';
 import React, { useEffect } from 'react';
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
 import EditBtnSvg from '../../../assets/button-svgs/EditBtnSvg.tsx';
-import {
-    fetchNoteById,
-    fetchNotesByUserId,
-} from '../../../store/Notes/notesApis.ts';
 import Button from '../../button/Button.tsx';
-import { useAppDispatch, useAppSelector } from '../../../store/store.ts';
+import { TSavedNotesProps } from '../../../containers/SavedNotesContainer.tsx';
 
-// exporting this interface as it is needed for the container
-export interface SavedNotesProps {
-    notes: ISingleNote[];
-    updateCurrentNote: ActionCreatorWithPayload<ISingleNote, string>;
-    fetchNotesByUserId: typeof fetchNotesByUserId;
-    fetchNoteById: typeof fetchNoteById;
-}
-const SavedNotes: React.FC<SavedNotesProps> = ({
+const SavedNotes: React.FC<TSavedNotesProps> = ({
     notes,
+    userDto,
     updateCurrentNote,
     fetchNotesByUserId,
 }) => {
@@ -27,10 +15,8 @@ const SavedNotes: React.FC<SavedNotesProps> = ({
     const navigate = useNavigate();
     // hooks
     useEffect(() => {
-        fetchNotesByUserId(1);
+        fetchNotesByUserId(Number.parseInt(userDto!.id));
     }, []);
-    const userDto = useAppSelector(state => state.usersSlice.userDto);
-    console.log(userDto);
     return (
         <>
             <div className={`saved-notes-ctn`}>
@@ -47,39 +33,50 @@ const SavedNotes: React.FC<SavedNotesProps> = ({
                 </div>
                 {/* existing whiteboards */}
                 <div>
+                    {notes.length === 0 && (
+                        <p
+                            className={`text-center font-mono text-sm text-primary-500`}
+                        >
+                            <em>You have no saved notes</em>
+                        </p>
+                    )}
                     {notes &&
                         notes.slice(0, 2).map((n, i) => (
-                            <Link
-                                to={`/notes`}
-                                key={n.id ? n.id : i}
-                                onClick={() => {
-                                    updateCurrentNote(n);
-                                }}
-                                className={`group flex w-full cursor-pointer items-center justify-between gap-4 rounded-lg px-2 py-0.5 transition-all duration-300 hover:bg-zinc-800`}
-                            >
-                                <span className={`text-sm`}>
-                                    {n.title.length > 15
-                                        ? n.title.substring(0, 15) + '...'
-                                        : n.title}
-                                </span>
+                            <div className="relative">
+                                <Link
+                                    to={`/notes`}
+                                    key={n.id ? n.id : i}
+                                    onClick={() => {
+                                        updateCurrentNote(n);
+                                    }}
+                                    className={`group flex w-full cursor-pointer items-center justify-between gap-4 rounded-lg px-2 py-0.5 transition-all duration-300 hover:bg-zinc-800`}
+                                >
+                                    <span className={`text-sm`}>
+                                        {n.title.length > 15
+                                            ? n.title.substring(0, 15) + '...'
+                                            : n.title}
+                                    </span>
+                                </Link>
                                 <Button
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         updateCurrentNote(n);
                                         navigate('update-notes/' + n.id!);
                                     }}
-                                    className={`pointer-events-none invisible p-1 transition-all duration-200 hover:bg-primary-700 group-hover:pointer-events-auto group-hover:visible`}
+                                    className={`absolute right-0 top-0 z-30 p-1 transition-all duration-200 hover:bg-primary-700 group-hover:pointer-events-auto group-hover:visible`}
                                 >
                                     {<EditBtnSvg />}
                                 </Button>
-                            </Link>
+                            </div>
                         ))}
-                    <Link
-                        to={`view-all-notes`}
-                        className={`my-1 flex w-full cursor-pointer rounded-lg px-2 py-2 font-mono text-xs font-bold underline-offset-4 hover:bg-primary hover:underline`}
-                    >
-                        <p className={`w-full text-center`}>View All</p>
-                    </Link>
+                    {notes.length > 2 && (
+                        <Link
+                            to={`view-all-notes`}
+                            className={`my-1 flex w-full cursor-pointer rounded-lg px-2 py-2 font-mono text-xs font-bold underline-offset-4 hover:bg-primary hover:underline`}
+                        >
+                            <p className={`w-full text-center`}>View All</p>
+                        </Link>
+                    )}
                 </div>
             </div>
         </>

@@ -7,15 +7,26 @@ import { AppDispatch, RootState } from '../store/store.ts';
 import { connect } from 'react-redux';
 import CreateWhiteboard from '../components/Whiteboard/CreateWhiteboard.tsx';
 
-const mapStateToProps = (state: RootState) => ({
-    loading: state.whiteboardSlice.fetchingWhiteboards,
-    currentWhiteboard: state.whiteboardSlice.currentWhiteboard,
-});
-
+// TYPES
+type TMapStateToProps = (state: RootState) => {
+    loading: boolean;
+    currentWhiteboard: any;
+    userDto: any;
+};
 type TMapDispatchToProps = (dispatch: AppDispatch) => {
     addWhiteboardAsync: typeof addWhiteboardAsync;
     updateWhiteboard: typeof updateWhiteboard;
 };
+
+export type TCreateWhiteboardProps = ReturnType<TMapStateToProps> &
+    ReturnType<TMapDispatchToProps>;
+
+// MAPPINGS
+const mapStateToProps: TMapStateToProps = (state: RootState) => ({
+    loading: state.whiteboardSlice.fetchingWhiteboards,
+    currentWhiteboard: state.whiteboardSlice.currentWhiteboard,
+    userDto: state.usersSlice.userDto,
+});
 const mapDispatchToProps: TMapDispatchToProps = (dispatch) => {
     return bindActionCreators(
         {
@@ -26,6 +37,7 @@ const mapDispatchToProps: TMapDispatchToProps = (dispatch) => {
     );
 };
 
+// CONTAINER
 const CreateWhiteboardContainer = connect(
     mapStateToProps,
     mapDispatchToProps,

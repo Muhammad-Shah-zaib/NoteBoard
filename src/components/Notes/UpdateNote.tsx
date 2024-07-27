@@ -1,5 +1,5 @@
 import MarkdownEditor from '@uiw/react-markdown-editor';
-import { useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import Button from '../../shared/button/Button.tsx';
 import Dialogue from '../../shared/components/dialogue/Dialogue.tsx';
 import { showComponent } from '../../utils/visibility.ts';
@@ -57,6 +57,9 @@ const UpdateNote: React.FC<IUpdateNoteProps> = ({
         updateNoteAsync(obj);
     };
 
+    useEffect(() => {
+        setContent(currentNote.content);
+    }, [currentNote]);
     return (
         <>
             <Dialogue id={dialogueId}>

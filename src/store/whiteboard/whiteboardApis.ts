@@ -25,7 +25,7 @@ export const addWhiteboardAsync = createAsyncThunk<
     { state: IWhiteboardState }
 >(ADD_WHITEBOARD, async (request: IAddWhiteboardRequestDto) => {
     const requestParams: URLSearchParams = new URLSearchParams({
-        userId: '1',
+        userId: request.userId.toString(),
     });
     const requestOptions = {
         method: 'POST',

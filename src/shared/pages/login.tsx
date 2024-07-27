@@ -76,13 +76,16 @@ const Login = ({
                         className="space-y-8"
                         onSubmit={handleSubmit(onSubmit)}
                     >
-                        {errors.root && (
-                            <span className="py-2 font-mono text-sm font-bold text-red-500">
-                                {errors.root.message}
-                            </span>
-                        )}
                         {/* Email */}
                         <div className={`grid w-full grid-cols-3 items-center`}>
+                            {/* ROOT ERROR */}
+                            {errors.root && (
+                                <div className="col-span-3 pb-2">
+                                    <span className="font-mono text-sm font-bold text-red-500">
+                                        {errors.root.message}
+                                    </span>
+                                </div>
+                            )}
                             <label className="font-mono text-lg font-bold">
                                 Email:{' '}
                                 <strong className="text-xl font-bold text-red-500">
@@ -100,12 +103,12 @@ const Login = ({
                                 })}
                                 className={`col-span-2 w-full border-b-2 border-primary-700 bg-transparent px-4 py-1 outline-none transition-all duration-300 focus:border-blue-700`}
                             />
+                            {errors.email && (
+                                <div className="col-span-3 py-2 font-mono text-sm font-bold text-red-500">
+                                    {errors.email.message}
+                                </div>
+                            )}
                         </div>
-                        {errors.email && (
-                            <div className="col-span-3 py-2 font-mono text-sm font-bold text-red-500">
-                                {errors.email.message}
-                            </div>
-                        )}
                         {/* Submit button */}
                         <div className="flex w-full justify-center">
                             <button

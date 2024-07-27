@@ -1,3 +1,5 @@
+import { IUserDto } from "../Users/types";
+
 export interface ISingleNote {
     id?: number;
     title: string;
@@ -9,6 +11,7 @@ export interface INotesState {
     notes: ISingleNote[];
     fetchingNotes: boolean;
     currentNote: ISingleNote | null;
+    userDto: IUserDto | null;
 }
 export interface IAddNoteRequestDto extends ISingleNote {}
 
