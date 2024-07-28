@@ -13,6 +13,7 @@ export interface IErrorDto {
 export interface IUserState {
     userDto : IUserDto | null;
     error: IErrorDto | null;
+    authError: IErrorDto | null;
     signUpSuccessMessage: string | null;
     loginStatus: boolean;
     incorrectEmail: boolean;
@@ -46,3 +47,9 @@ export interface ISignUpRequestDto extends IUserDto {}
 export interface ILoginResponseDto extends response {
     user: IUserDto
 }
+
+// INRERFACES FOR VERIFY CREDENTAILS
+export interface IVerifyCredentialsResponse extends response {
+    userDto: IUserDto;
+}
+export interface IVerifyCredentialsRequest extends IUserDto {}

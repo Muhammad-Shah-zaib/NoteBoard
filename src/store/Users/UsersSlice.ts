@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ILoginResponseDto, ISingUpResponseDto, IUserDto, IUserState, IVerifyEmailResponse } from "./types";
-import { loginAsync, signUpAsync, verifyEmailAsync, verifyLoginAsync } from "./UsersApis";
+import { ILoginResponseDto, ISingUpResponseDto, IUserDto, IUserState, IVerifyCredentialsResponse, IVerifyEmailResponse } from "./types";
+import { loginAsync, signUpAsync, verifyCredentialsAsync, verifyEmailAsync, verifyLoginAsync } from "./UsersApis";
 
 // initial state
 export const initialState: IUserState = {
     userDto: null,
     error: null,
+    authError: null,
     signUpSuccessMessage: null,
     loginStatus: false,
     incorrectEmail: false,
@@ -27,7 +28,7 @@ export const usersSlice = createSlice({
                 state.loginStatus = action.payload.status;
             }
         }, 
-        updateUserDto: (state, { payload: {userDto}}: PayloadAction<{userDto: IUserDto}>) => {
+        updateUserDto: (state, { payload: {userDto}}: PayloadAction<{userDto: IUserDto | null }>) => {
             state.userDto = userDto;
             console.log(userDto);
         }
@@ -93,7 +94,18 @@ export const usersSlice = createSlice({
                 } 
             }).addCase(verifyLoginAsync.pending, state => {
                 state.loginVerificationPending = true;
-            })
+            }).addCase(verifyCredentialsAsync.fulfilled, (state,{payload}: PayloadAction<IVerifyCredentialsResponse> )=> {
+                if (payload.ok && payload.statusCode === 200) {
+                    state.userDto = payload.userDto;
+                    localStorage.setItem('userDto', JSON.stringify(payload.userDto));
+                }else {
+                    localStorage.removeItem('userDto');
+                    state.authError = {
+                        message: payload.message,
+                        statusCode: payload.statusCode,
+                    }
+                }
+            });
     }
 })
 

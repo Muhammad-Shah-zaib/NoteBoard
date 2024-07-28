@@ -1,6 +1,15 @@
-.pencil-cursor {
+.drawing-cursor {
     width: 5px;
     height: 5px;
     backdrop-color: #131313;
     cursor: url("../../assets/whitboard/pencil-cursor.svg"), auto;
+}
+.black-cursor {
+    backdrop-color: #131313;
+}
+.green-cursor {
+    backdrop-color: #00FF00;
+}
+.default-cursor {
+    cursor: default;
 }
