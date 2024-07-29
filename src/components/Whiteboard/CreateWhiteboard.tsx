@@ -51,6 +51,10 @@ const CreateWhiteboard: React.FC<TCreateWhiteboardProps> = ({
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
+        if (currentWhiteboard) {
+            // we need to load the image on the canvas
+            loadImageOnCanvas(ctx, currentWhiteboard.imageUrl);
+        }
         const handleMouseDown = (event: MouseEvent) => {
             ctx.strokeStyle = currentColor;
             startPencil(event, ctx, canvas);
@@ -82,10 +86,6 @@ const CreateWhiteboard: React.FC<TCreateWhiteboardProps> = ({
                         const newIndex = prevIndex - 1;
                         const lastState = canvasStates[newIndex];
                         if (lastState) {
-                            clearCanvas(ctx, {
-                                width: canvas.width,
-                                height: canvas.height,
-                            });
                             loadImageOnCanvas(ctx, lastState);
                         }
                         return newIndex;
@@ -128,7 +128,13 @@ const CreateWhiteboard: React.FC<TCreateWhiteboardProps> = ({
             canvas.removeEventListener('mouseup', handleMouseUp);
             window.removeEventListener('keydown', handleKeyDown);
         };
-    }, [currentColor, isDrawing, canvasStates, canvasStateIndex]); // Add dependencies
+    }, [
+        currentColor,
+        isDrawing,
+        canvasStates,
+        canvasStateIndex,
+        currentWhiteboard,
+    ]); // Add dependencies
 
     const loadImageOnCanvas = (
         ctx: CanvasRenderingContext2D,
