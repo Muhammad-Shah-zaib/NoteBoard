@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useAppDispatch } from '../store/store';
 import { IUserDto, IVerifyCredentialsRequest } from '../store/Users/types';
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -13,6 +13,7 @@ const AuthGuard = ({
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(true); // Add loading state
+    const memorizedUserDto = useMemo(() => userDto, [userDto]);
 
     useEffect(() => {
         if (error) {
@@ -40,16 +41,17 @@ const AuthGuard = ({
                 navigate('/login'); // Navigate if userDto is still not available
             }
         }
-    }, [loading, userDto, navigate]);
+    }, [loading, memorizedUserDto, navigate]);
 
     useEffect(() => {
         const savedUserDto = localStorage.getItem('userDto');
-        if (savedUserDto)
+        if (savedUserDto) {
             verifyCredentialsAsync(
-                JSON.parse(savedUserDto as string) as IVerifyCredentialsRequest,
+                JSON.parse(savedUserDto) as IVerifyCredentialsRequest,
             );
-        return () => undefined;
-    }, [userDto]);
+        }
+        // No need for a cleanup function here, unless there's something specific to clean up
+    }, [verifyCredentialsAsync]); // Only depend on verifyCredentialsAsync
     if (loading) {
         return <div>Loading...</div>; // Show a loading indicator while fetching userDto
     }

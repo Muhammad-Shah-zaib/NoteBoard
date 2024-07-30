@@ -106,7 +106,6 @@ export const verifyCredentialsAsync = createAsyncThunk<
 >(
     VERIFY_CREDENTIALS,
     async (requestDto )=> {
-        console.log("-----------------");
         console.log(requestDto);
         // request options
         const requestOptions: IRequestOptions = {

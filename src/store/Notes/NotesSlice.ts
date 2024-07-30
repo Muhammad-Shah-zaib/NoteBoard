@@ -34,7 +34,7 @@ export const notesSlice = createSlice({
             state.notes.unshift(action.payload);
             state.currentNote = action.payload;
         },
-        updateCurrentNote: (state, action: PayloadAction<ISingleNote>) => {
+        updateCurrentNote: (state, action: PayloadAction<ISingleNote | null>) => {
             state.currentNote = action.payload;
         },
         deleteNote: (

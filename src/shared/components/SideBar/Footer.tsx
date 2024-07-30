@@ -1,20 +1,21 @@
-import TrashBtnSvg from '../../../assets/button-svgs/TrashBtnSvg.tsx';
 import ExclamationMarkSvg from '../../../assets/button-svgs/ExclamationMarkSvg.tsx';
+import { useNavigate } from 'react-router-dom';
 const Footer = () => {
+    // router HOOKS
+    const naviagte = useNavigate();
     return (
         <div className={`footer-ctn`}>
             <div
-                className={`flex gap-2 p-1 transition-all duration-200 hover:bg-primary`}
-            >
-                <TrashBtnSvg />
-                <span>Trash</span>
-            </div>
-
-            <div
-                className={`flex gap-2 p-1 transition-all duration-200 hover:bg-primary`}
+                onClick={() => {
+                    if (confirm('Are you sure you want to log out?')) {
+                        localStorage.removeItem('userDto');
+                        naviagte('/login');
+                    }
+                }}
+                className={`flex cursor-pointer gap-2 p-1 transition-all duration-200 hover:bg-primary`}
             >
                 <ExclamationMarkSvg />
-                <span>Contact / Support</span>
+                <span>Log out</span>
             </div>
         </div>
     );

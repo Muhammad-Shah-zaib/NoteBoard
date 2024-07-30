@@ -16,7 +16,7 @@ export interface CreateNotesProps {
 
 const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
     // Markdown Editor HEIGHT
-    const mdEditorHeight: string = window.innerHeight > 768 ? '95vh' : '35vh';
+    const mdEditorHeight: string = window.innerWidth >= 768 ? '95vh' : '35vh';
 
     // store Hooks
     const navigate = useNavigate();

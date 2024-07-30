@@ -69,7 +69,7 @@ const SavedNotes: React.FC<TSavedNotesProps> = ({
                                 </Button>
                             </div>
                         ))}
-                    {notes.length > 2 && (
+                    {notes.length > 0 && (
                         <Link
                             to={`view-all-notes`}
                             className={`my-1 flex w-full cursor-pointer rounded-lg px-2 py-2 font-mono text-xs font-bold underline-offset-4 hover:bg-primary hover:underline`}

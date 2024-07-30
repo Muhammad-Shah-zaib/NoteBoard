@@ -1,4 +1,10 @@
-import React, { useId, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+    useEffect,
+    useId,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'react';
 import pencilSvg from '../../assets/whitboard/pencil.svg';
 import trashSvg from '../../assets/whitboard/trash.svg';
 import saveSvg from '../../assets/whitboard/save.svg';
@@ -9,6 +15,7 @@ import Dialogue from '../../shared/components/dialogue/Dialogue.tsx';
 import CreateWhiteboardDialogue from './CreateWhiteboardDialogue.tsx';
 import { showComponent } from '../../utils/visibility.ts';
 import { TCreateWhiteboardProps } from '../../containers/CreateWhiteboardContainer.tsx';
+import { updateCurrentNote } from '../../store/Notes/NotesSlice.ts';
 
 const CreateWhiteboard: React.FC<TCreateWhiteboardProps> = ({
     userDto,
@@ -21,6 +28,7 @@ const CreateWhiteboard: React.FC<TCreateWhiteboardProps> = ({
 
     // STATE FOR DRAWING
     const [isDrawing, setIsDrawing] = useState<boolean>(false);
+
     // STATE FOR TITLE INPUT
     const [title, setTitle] = useState<string>(
         currentWhiteboard ? currentWhiteboard.title : '',
@@ -40,6 +48,8 @@ const CreateWhiteboard: React.FC<TCreateWhiteboardProps> = ({
     const [canvasStates, setCanvasStates] = useState<string[]>([]);
     const [canvasStateIndex, setCanvasStateIndex] = useState<number>(-1);
 
+    // FLAG TO DETERMINE IF IMAGE SHOULD BE LOADED
+
     // CUSTOM HOOK FOR PENCIL
     const { startPencil, stopPencil, keepDrawing } = usePencil();
 
@@ -51,10 +61,6 @@ const CreateWhiteboard: React.FC<TCreateWhiteboardProps> = ({
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        if (currentWhiteboard) {
-            // we need to load the image on the canvas
-            loadImageOnCanvas(ctx, currentWhiteboard.imageUrl);
-        }
         const handleMouseDown = (event: MouseEvent) => {
             ctx.strokeStyle = currentColor;
             startPencil(event, ctx, canvas);
@@ -133,8 +139,37 @@ const CreateWhiteboard: React.FC<TCreateWhiteboardProps> = ({
         isDrawing,
         canvasStates,
         canvasStateIndex,
-        currentWhiteboard,
+        startPencil,
+        keepDrawing,
+        stopPencil,
     ]); // Add dependencies
+
+    // USE EFFECT TO CLEAR CANVAS ON URL CHANGE
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+                clearCanvas(ctx, {
+                    width: canvas.width,
+                    height: canvas.height,
+                });
+            }
+        }
+    }, [url]); // Run this effect when URL changes
+
+    // USE LAYOUT EFFECT TO LOAD IMAGE ON CANVAS
+    useLayoutEffect(() => {
+        // getting the canvas and the context
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        if (currentWhiteboard) {
+            loadImageOnCanvas(ctx, currentWhiteboard.imageUrl);
+        }
+    }, [currentWhiteboard]);
 
     const loadImageOnCanvas = (
         ctx: CanvasRenderingContext2D,
