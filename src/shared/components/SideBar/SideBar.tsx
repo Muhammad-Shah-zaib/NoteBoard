@@ -10,6 +10,7 @@ import Footer from './Footer.tsx';
 import React, { useRef } from 'react';
 import SavedNotesContainer from '../../../containers/SavedNotesContainer.tsx';
 import SavedWhiteboardsContainer from '../../../containers/SavedWhiteboardsContainer.tsx';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
     sideBarCtnRef: React.RefObject<HTMLDivElement>;
@@ -18,6 +19,9 @@ interface Props {
 }
 
 function SideBar({ sideBarCtnRef, contentCtnRef, openBtnCtnRef }: Props) {
+    // router hooks
+    const navigate = useNavigate();
+    // SIDE BAR REF
     const sideBarRef = useRef<HTMLDivElement>(null);
     return (
         <div className="ctn" ref={sideBarRef}>
@@ -61,6 +65,9 @@ function SideBar({ sideBarCtnRef, contentCtnRef, openBtnCtnRef }: Props) {
                             <span>Search</span>
                         </div>
                         <div
+                            onClick={() => {
+                                navigate('/home');
+                            }}
                             className={`flex cursor-pointer items-center gap-2 px-2 py-1 transition-all duration-300 hover:bg-primary`}
                         >
                             <Button>{<HomeBtnSvg />}</Button>

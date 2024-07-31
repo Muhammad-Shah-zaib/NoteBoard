@@ -76,6 +76,7 @@ const CreateNotesDialogue = ({
                         <span className={`text-red-500`}>*</span>
                     </label>
                     <input
+                        type="text"
                         ref={titleInputRef}
                         value={titleState}
                         id={`title-input`}

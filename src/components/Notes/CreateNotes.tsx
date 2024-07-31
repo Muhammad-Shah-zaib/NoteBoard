@@ -7,14 +7,9 @@ import CreateNotesDialogue from './CreateNotesDialogue.tsx';
 import { ISingleNote } from '../../store/Notes/types.ts';
 import BackBtnSvg from '../../assets/button-svgs/BackBtnSvg.tsx';
 import { useNavigate } from 'react-router-dom';
-import { createCaseAsync } from '../../store/Notes/notesApis.ts';
+import { TCreateNotesProps } from '../../containers/CreateNotesContainer.tsx';
 
-export interface CreateNotesProps {
-    loading: boolean;
-    createCaseAsync: typeof createCaseAsync;
-}
-
-const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
+const CreateNotes = ({ createCaseAsync, userDto }: TCreateNotesProps) => {
     // Markdown Editor HEIGHT
     const mdEditorHeight: string = window.innerWidth >= 768 ? '95vh' : '35vh';
 
@@ -52,7 +47,7 @@ const CreateNotes = ({ createCaseAsync }: CreateNotesProps) => {
         const obj: ISingleNote = {
             title,
             content,
-            userId: 1,
+            userId: Number.parseInt(userDto.id),
         };
         createCaseAsync(obj);
     };

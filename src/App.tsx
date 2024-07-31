@@ -13,6 +13,7 @@ import SignUpContainer from './containers/SignUpContainer.tsx';
 import LoginContainer from './containers/loginContainer.tsx';
 import LoginVerificationContainer from './containers/LoginVerificationContainer.tsx';
 import AuthGuardConatainer from './containers/AuthGuardContainer.tsx';
+import HomeContainer from './containers/HomeContainer.tsx';
 
 function App() {
     return (
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/" element={<AuthGuardConatainer />}>
                         <Route path={'/'} element={<MasterLayout />}>
                             <Route path={'notes'} element={<Notes />} />
+                            <Route path={`home`} element={<HomeContainer />} />
                             <Route
                                 path={'create-notes'}
                                 element={<CreateNotesContainer />}
