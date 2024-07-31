@@ -10,7 +10,7 @@ Welcome to the **Noteboard App**! This is a frontend part of noteboard, for back
 
 ## Tech Stack
 
-- **Frontend**: React, Redux Toolkit, React Hook Form
+- **Frontend**: `React`, `Redux Toolkit`, `React Hook Form`
 - **Build Tool**: Vite
 - **Language**: TypeScript
 
