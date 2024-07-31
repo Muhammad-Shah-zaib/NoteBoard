@@ -1,6 +1,8 @@
 # Noteboard App
 
-Welcome to the **Noteboard App**! This is a frontend part of noteboard, for backend view [NoteboardServer](https://github.com/Muhammad-Shah-zaib/NoteBoardServer), > Noteboard React-based web application designed for managing and organizing your notes and whiteboards. It includes features for creating, reading, updating, and deleting (CRUD) both notes and whiteboards, and it comes with a markdown editor for rich text note-taking and display.
+Welcome to the **Noteboard App**! This is a frontend part of noteboard, for backend view [NoteboardServer](https://github.com/Muhammad-Shah-zaib/NoteBoardServer), 
+
+> Noteboard React-based web application designed for managing and organizing your notes and whiteboards. It includes features for creating, reading, updating, and deleting (CRUD) both notes and whiteboards, and it comes with a markdown editor for rich text note-taking and display.
 
 ## Features
 
