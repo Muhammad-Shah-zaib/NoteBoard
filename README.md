@@ -23,7 +23,7 @@ To get started with the Noteboard app, follow these steps:
 1. **Clone the Repository**
 
     ```bash
-    git clone https://github.com/Muhammad-Shah-zaib/noteboard.git
+    git clone https://github.com/Muhammad-Shah-zaib/noteboard
     cd noteboard
     ```
 
