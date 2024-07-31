@@ -9,13 +9,13 @@ import pencilSvg from '../../assets/whitboard/pencil.svg';
 import trashSvg from '../../assets/whitboard/trash.svg';
 import saveSvg from '../../assets/whitboard/save.svg';
 import downArrow from '../../assets/whitboard/down-arrow.svg';
+import shareSvg from '../../assets/whitboard/share.svg';
 import './whitboard.css';
 import usePencil from '../../customHooks/usePencil.ts';
 import Dialogue from '../../shared/components/dialogue/Dialogue.tsx';
 import CreateWhiteboardDialogue from './CreateWhiteboardDialogue.tsx';
 import { showComponent } from '../../utils/visibility.ts';
 import { TCreateWhiteboardProps } from '../../containers/CreateWhiteboardContainer.tsx';
-import { updateCurrentNote } from '../../store/Notes/NotesSlice.ts';
 
 const CreateWhiteboard: React.FC<TCreateWhiteboardProps> = ({
     userDto,
@@ -325,6 +325,41 @@ const CreateWhiteboard: React.FC<TCreateWhiteboardProps> = ({
                     >
                         <img src={trashSvg} alt="clear" />
                     </div>
+                    <div
+                        onClick={() => {
+                            if (!canvasRef.current) return;
+                            const canvas = canvasRef.current;
+                            const ctx = canvas.getContext('2d');
+                            if (!ctx) return;
+
+                            // Save the current canvas content as an image data URL
+                            const currentContent =
+                                canvas.toDataURL('image/png');
+
+                            // Fill the background with white
+                            ctx.fillStyle = 'white';
+                            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                            // Create an image element to redraw the saved content
+                            const image = new Image();
+                            image.src = currentContent;
+                            image.onload = () => {
+                                // Draw the saved content on top of the white background
+                                ctx.drawImage(image, 0, 0);
+
+                                // Generate the data URL and trigger the download
+                                const dataURL = canvas.toDataURL('image/png');
+                                const link = document.createElement('a');
+                                link.href = dataURL;
+                                link.download = 'canvas-image.png'; // Filename for the downloaded image
+                                link.click();
+                            };
+                        }}
+                        className="flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-lg bg-zinc-300"
+                    >
+                        <img src={shareSvg} alt="clear" />
+                    </div>
+
                     <div
                         onClick={() => showComponent(whiteboardId)}
                         className="flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-lg bg-zinc-300"
