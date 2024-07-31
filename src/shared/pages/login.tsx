@@ -2,6 +2,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { TLoginProps } from '../../containers/loginContainer';
 import BackBtnSvg from '../../assets/button-svgs/BackBtnSvg';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 interface ILoginForm {
     email: string;
@@ -110,7 +111,13 @@ const Login = ({
                             )}
                         </div>
                         {/* Submit button */}
-                        <div className="flex w-full justify-center">
+                        <div className="flex w-full items-center justify-between">
+                            <Link
+                                to={`/signup`}
+                                className={`text-blue-500 underline-offset-4 hover:underline`}
+                            >
+                                Don't have an account?
+                            </Link>
                             <button
                                 type="submit"
                                 className="rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors duration-300 hover:bg-blue-700 focus:bg-blue-900 disabled:cursor-not-allowed disabled:bg-primary-400"
