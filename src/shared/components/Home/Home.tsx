@@ -1,6 +1,7 @@
 import { THomeProps } from '../../../containers/HomeContainer';
 import 'react-multi-carousel/lib/styles.css';
 import { useNavigate } from 'react-router-dom';
+import './Home.css';
 
 function Home({
     notesDto,
@@ -22,7 +23,7 @@ function Home({
                         updateCurrentNote(n);
                         navigate('/notes');
                     }}
-                    className={`flex h-16 cursor-pointer items-center justify-center rounded-lg border-2 border-primary-700 p-4 shadow-lg shadow-secondary transition-all duration-300 hover:border-indigo-400 md:h-20 lg:h-28`}
+                    className={`animate-border flex h-16 cursor-pointer items-center justify-center rounded-lg border-2 border-primary-700 p-4 shadow-lg shadow-secondary transition-all duration-300 md:h-20 lg:h-28`}
                 >
                     <h3 className="font-mono text-sm font-bold md:text-lg">
                         {n.title}
@@ -41,7 +42,7 @@ function Home({
                         navigate(`/update-whiteboard/${w.id}`);
                     }}
                     key={w.id}
-                    className={`flex h-28 cursor-pointer items-center justify-center rounded-lg border-2 border-primary-700 p-4 shadow-lg shadow-secondary transition-all duration-300 hover:border-indigo-400`}
+                    className={`animate-border flex h-28 cursor-pointer items-center justify-center rounded-lg border-2 border-primary-700 p-4 shadow-lg shadow-secondary transition-all duration-300`}
                 >
                     <h3 className="font-mono text-lg font-bold">{w.title}</h3>
                 </div>
