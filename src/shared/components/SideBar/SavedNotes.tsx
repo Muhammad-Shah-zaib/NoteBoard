@@ -41,7 +41,7 @@ const SavedNotes: React.FC<TSavedNotesProps> = ({
                         </p>
                     )}
                     {notes &&
-                        notes.slice(0, 2).map((n, i) => (
+                        notes.slice(0, 3).map((n, i) => (
                             <div className="relative">
                                 <Link
                                     to={`/notes`}
@@ -49,7 +49,7 @@ const SavedNotes: React.FC<TSavedNotesProps> = ({
                                     onClick={() => {
                                         updateCurrentNote(n);
                                     }}
-                                    className={`group flex w-full cursor-pointer items-center justify-between gap-4 rounded-lg px-2 py-0.5 transition-all duration-300 hover:bg-zinc-800`}
+                                    className={`group flex w-full cursor-pointer items-center justify-between gap-4 rounded-lg px-2 py-1 transition-all duration-300 hover:bg-zinc-800`}
                                 >
                                     <span className={`text-sm`}>
                                         {n.title.length > 15

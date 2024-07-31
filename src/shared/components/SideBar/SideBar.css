@@ -13,7 +13,7 @@ header .logo-ctn {
 }
 
 .profile-ctn {
-    @apply flex gap-2 items-center justify-between;
+    @apply flex gap-4 items-center;
 }
 .close-btn {
     @apply hover:bg-primary px-1.5 py-1 rounded-lg transition-all duration-200;

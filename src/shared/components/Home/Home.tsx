@@ -2,6 +2,8 @@ import { THomeProps } from '../../../containers/HomeContainer';
 import 'react-multi-carousel/lib/styles.css';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
+import AddBtnSvg from '../../../assets/button-svgs/AddBtnSvg';
+import Button from '../../button/Button';
 
 function Home({
     notesDto,
@@ -69,7 +71,20 @@ function Home({
 
             {/* NOTES CAROUSEL */}
             <div className="w-full max-w-[1024px] select-none">
-                <h1 className={`text-5xl font-bold`}>Latest Notes</h1>
+                <div
+                    className={`flex w-full items-center justify-between py-4 pr-4`}
+                >
+                    <h1 className={`text-5xl font-bold`}>Latest Notes</h1>
+                    <Button
+                        onClick={() => {
+                            updateCurrentNote(null);
+                            navigate('/create-notes');
+                        }}
+                        className={`animate-border border-2 border-transparent p-2 shadow-lg`}
+                    >
+                        {<AddBtnSvg />}
+                    </Button>
+                </div>
                 {/* we need to render latest notes here */}
                 <div className="grid grid-cols-2 gap-4 xs:grid-cols-3 lg:grid-cols-5">
                     {notes}
@@ -78,9 +93,22 @@ function Home({
 
             {/* WHITEBOARDS CAROSUEL */}
             <div className="w-full max-w-[1024px] select-none border-t-2 border-primary-600">
-                <h1 className={`py-4 text-5xl font-bold`}>Whiteboards</h1>
+                <div
+                    className={`flex w-full items-center justify-between py-4 pr-4`}
+                >
+                    <h1 className={`text-5xl font-bold`}>Latest Notes</h1>
+                    <Button
+                        onClick={() => {
+                            setCurrentWhiteboard(null);
+                            navigate('/create-whiteboard');
+                        }}
+                        className={`animate-border border-2 border-transparent p-2 shadow-lg`}
+                    >
+                        {<AddBtnSvg />}
+                    </Button>
+                </div>
                 {/* we need to render latest whitebaords here */}
-                <div className="grid grid-cols-2 justify-center gap-4 xs:grid-cols-3 lg:grid-cols-5">
+                <div className="grid grid-cols-2 gap-4 xs:grid-cols-3 lg:grid-cols-5">
                     {whiteboards}
                 </div>
             </div>

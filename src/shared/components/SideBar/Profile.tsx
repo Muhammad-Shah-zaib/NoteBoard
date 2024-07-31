@@ -1,17 +1,17 @@
 import DefaultUser from '../../../assets/DefaultUser.svg';
 import { useState } from 'react';
-import Button from '../../button/Button.tsx';
-import AddBtnSvg from '../../../assets/button-svgs/AddBtnSvg.tsx';
+
 const Profile = () => {
     const [username] = useState<string>('Muhammad Shahzaib');
 
     const getName = (): string => {
-        if (username.length > 10) {
-            return username.substring(0, 10) + '...';
+        if (username.length > 15) {
+            return username.substring(0, 15) + '...';
         }
 
         return username;
     };
+
     return (
         <div className={`profile-ctn`}>
             {/* image */}
@@ -21,11 +21,6 @@ const Profile = () => {
                 <img src={DefaultUser} alt={`Profile picture`} />
             </div>
             <span className={`text-sm`}>{getName()}</span>
-            <Button
-                className={`opacity-60 transition-all duration-200 hover:opacity-100`}
-            >
-                {<AddBtnSvg />}
-            </Button>
         </div>
     );
 };

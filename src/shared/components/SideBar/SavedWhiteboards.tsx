@@ -42,7 +42,7 @@ const SavedWhiteboards = ({
                         </p>
                     )}
                     {whiteboards
-                        .filter((_, i) => i < 2)
+                        .filter((_, i) => i < 3)
                         .map((w, i) => (
                             <div key={w.id ? w.id : i}>
                                 <Link

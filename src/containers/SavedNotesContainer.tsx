@@ -19,6 +19,7 @@ type TMapStateToProps = (state: RootState) => {
 
 type TMapDispatchToProps = (dispatch: AppDispatch) => {
     updateCurrentNote: ActionCreatorWithPayload<ISingleNote, string>;
+    createCaseAsync: typeof createCaseAsync;
     fetchNotesByUserId: typeof fetchNotesByUserId;
     fetchNoteById: typeof fetchNoteById;
 };
@@ -31,8 +32,8 @@ const mapStateToProps: TMapStateToProps = (state: RootState) => ({
     userDto: state.usersSlice.userDto,
 });
 
-const mapDispatchToProps: TMapDispatchToProps = (dispatch) =>
-    bindActionCreators(
+const mapDispatchToProps: TMapDispatchToProps = (dispatch) => {
+    return bindActionCreators(
         {
             updateCurrentNote,
             fetchNotesByUserId,
@@ -41,6 +42,7 @@ const mapDispatchToProps: TMapDispatchToProps = (dispatch) =>
         },
         dispatch,
     );
+};
 
 const SavedNotesContainer = connect(
     mapStateToProps,
